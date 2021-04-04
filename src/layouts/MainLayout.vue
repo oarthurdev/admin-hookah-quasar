@@ -97,7 +97,7 @@ export default {
   },
   created () {
     let vm = this
-    vm.user.email = sessionStorage.getItem('email')
+    vm.user.email = localStorage.getItem('email')
 
     vm.$axios
         .post('/user/get-photo', {email: vm.user.email})

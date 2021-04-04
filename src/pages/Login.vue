@@ -88,8 +88,8 @@ export default {
             new AWN().alert('User and password cannot be empty.')
             return false
           } else if (result.data.auth) {
-            sessionStorage.setItem('token', result.data.token)
-            sessionStorage.setItem('email', result.data.email)
+            localStorage.setItem('token', result.data.token)
+            localStorage.setItem('email', result.data.email)
             window.open('/#/dashboard', 'janela1', 'directories=no, location=no, menubar=no, scrollbars=no, status=no, toolbar=no, resizable=no')
           } else {
             new AWN().alert('Wrong email or password, try again.')
