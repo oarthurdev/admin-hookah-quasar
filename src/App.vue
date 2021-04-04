@@ -18,3 +18,14 @@ export default {
   }
 }
 </script>
+<style>
+body, html{
+  height: 100%;
+  overflow: hidden;
+}
+
+#app {
+  margin: -1px;
+  height: 100%;
+}
+</style>

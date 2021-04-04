@@ -1,7 +1,4 @@
 <template>
-<div class="row container">
-    <div class="col-3"></div>
-    <div class="col-6">
         <q-layout view="hHh lpR fFf">
 
             <q-page-container>
@@ -9,8 +6,6 @@
             </q-page-container>
 
         </q-layout>
-    </div>
-</div>
 </template>
 
 <script>

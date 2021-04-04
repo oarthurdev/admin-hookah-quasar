@@ -32,7 +32,7 @@
       <q-tooltip
           transition-show="rotate"
           transition-hide="rotate">
-          Set dark mode {{onOrOff}}
+          Turn lights {{onOrOff}}
         </q-tooltip>
     </q-toggle>
       <q-list id="main-navigation">
@@ -69,12 +69,6 @@ const linksData = [
     caption: 'Home',
     icon: 'home',
     link: '/dashboard'
-  },
-  {
-    title: 'Teste',
-    caption: 'Arthur',
-    icon: 'dashboard',
-    link: '/teste'
   }
 ];
 
@@ -123,10 +117,10 @@ export default {
     setDarkMode () {
       if(this.darkMode) {
         this.$q.dark.set(true)
-        this.onOrOff = 'off'
+        this.onOrOff = 'on'
       } else {
         this.$q.dark.set(false)
-        this.onOrOff = 'on'
+        this.onOrOff = 'off'
       }
 
       localStorage.setItem('dark', this.$q.dark.isActive)
