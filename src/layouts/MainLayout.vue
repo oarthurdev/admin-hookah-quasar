@@ -120,11 +120,13 @@ export default {
         photo: '',
         role: ''
       },
+      token: null
     }
   },
   created () {
     let vm = this
     vm.user.email = localStorage.getItem('email')
+    vm.token = localStorage.getItem('token')
 
     vm.$axios
         .post('/user/get-photo', {email: vm.user.email})
@@ -158,8 +160,20 @@ export default {
 
       localStorage.setItem('dark', this.$q.dark.isActive)
     },
-    logout () {
-      console.log('logout')
+    logout (e) {
+      e.preventDefault()
+      this.$axios
+        .post('logout', {token: this.token})
+        .then(function (result) {
+          console.log(result)
+          if (result.data) {
+            console.log(result.data)
+            localStorage.clear()
+            window.close()
+          } else {
+            console.log('Error')
+          }
+        })
     },
     profile () {
       const self = this
