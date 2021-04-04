@@ -15,7 +15,9 @@
           Hookah Finder
         </q-toolbar-title>
 
-        <div></div>
+        <img v-bind:src="'http://localhost:8080/' + user.photo" class="user-image" alt="User Image">
+        <div>{{user.email}}</div>
+        <div>{{user.role}}</div>
       </q-toolbar>
     </q-header>
 
@@ -85,8 +87,37 @@ export default {
       essentialLinks: linksData,
       el: '',
       darkMode: false,
-      onOrOff: 'on'
+      onOrOff: 'on',
+      user: {
+        email: '',
+        photo: '',
+        role: ''
+      },
     }
+  },
+  created () {
+    let vm = this
+    vm.user.email = sessionStorage.getItem('email')
+
+    vm.$axios
+        .post('/user/get-photo', {email: vm.user.email})
+        .then(function (result) {
+          if (result.data) {
+            vm.user.photo = result.data.profile_picture
+            console.log(vm.fullPath)
+          } else {
+            console.log('Error')
+          }
+        })
+    vm.$axios
+        .post('/user/get-role', {email: vm.user.email})
+        .then(function (result) {
+          if (result.data) {
+            vm.user_role = result.data.role_name
+          } else {
+            console.log('Error')
+          }
+        })
   },
   methods: {
     setDarkMode () {
@@ -106,5 +137,11 @@ export default {
 <style scoped>
 .toggleDarkMode {
   float: right;
+}
+.user-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  margin-right: 10px;
 }
 </style>

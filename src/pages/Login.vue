@@ -68,22 +68,19 @@
 </template>
 
 <script>
+import AWN from "awesome-notifications"
+require('vue-awesome-notifications/dist/styles/style.css')
 export default {
   data () {
     return {
-      // primeiro passo é definir o formulário que estamos usando no html
-      // Abaixo defino o formulárioLogin como um objeto vazio
       formularioLogin: {}
     }
   },
-  // outro ponto importe no vue.js são os methods, ou seja, basicamente é onde colocamos a açoes
-  // que pecisamos executar, no caso o login e o limpar formulario, ao click nos botoes acionamos
-  // as funções que são implementadas aqui no methods
   methods: {
     async logar () {
       try {
       this.$axios
-        .post('http://localhost:8081/login', { email: this.formularioLogin.email, password: this.formularioLogin.senha })
+        .post('/login', { email: this.formularioLogin.email, password: this.formularioLogin.senha })
         .then(function (result) {
           if (result.data.noExist) {
             new AWN().alert('Email does not exist in our system.')
@@ -105,9 +102,6 @@ export default {
     limpar () {
       this.formularioLogin = {}
     }
-  },
-  create () {
-    console.log('Assim que a tela for inicia essa mensagem irá aparecer')
   }
 }
 </script>
