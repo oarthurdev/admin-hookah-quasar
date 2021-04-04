@@ -15,9 +15,42 @@
           Hookah Finder
         </q-toolbar-title>
 
-        <img v-bind:src="'http://localhost:8080/' + user.photo" class="user-image" alt="User Image">
-        <div>{{user.email}}</div>
-        <div>{{user.role}}</div>
+        <div id="dropdownUser">
+          <q-item clickable>
+            <img v-bind:src="'http://localhost:8081/' + user.photo" class="user-image" alt="User Image">
+            <a style="cursor: pointer; font-size: 9pt;">
+              <div style="margin-top: 8px;">{{user.email}}</div>
+            </a>
+          </q-item>
+
+          <q-menu fit>
+          <q-list style="min-width: 100px">
+            <q-item clickable>
+                <q-item-section @click="profile">
+                  <center>
+                    <img v-bind:src="'http://localhost:8081/' + user.photo" class="user-image-dropdown" alt="User Image">
+                    <q-tooltip
+                    transition-show="rotate"
+                    transition-hide="rotate">
+                    Profile
+                  </q-tooltip>
+                  </center>
+                </q-item-section>
+            </q-item>
+            <q-item clickable @click="logout">
+              <q-item-section>
+                <q-btn :icon="'logout'">
+                <q-tooltip
+                  transition-show="rotate"
+                  transition-hide="rotate">
+                  Logout
+                </q-tooltip>
+              </q-btn>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -124,6 +157,13 @@ export default {
       }
 
       localStorage.setItem('dark', this.$q.dark.isActive)
+    },
+    logout () {
+      console.log('logout')
+    },
+    profile () {
+      const self = this
+      self.$router.push('/profile')
     }
   }
 }
@@ -133,9 +173,19 @@ export default {
   float: right;
 }
 .user-image {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 50px;
   margin-right: 10px;
+}
+
+.user-image-dropdown {
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+}
+
+#dropdownUser {
+  margin-right: -15px;
 }
 </style>
