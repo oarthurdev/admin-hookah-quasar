@@ -17,8 +17,8 @@
 
         <div id="dropdownUser">
           <q-item clickable>
-            <img v-bind:src="'http://localhost:8081/' + user.photo" class="user-image" alt="User Image">
-            <a style="cursor: pointer; font-size: 9pt;">
+            <img v-bind:src="'http://localhost:8080/' + user.photo" class="user-image" alt="User Image">
+            <a style="cursor: pointer; font-size: 11pt;">
               <div style="margin-top: 8px;">{{user.email}}</div>
             </a>
           </q-item>
@@ -28,7 +28,7 @@
             <q-item clickable>
                 <q-item-section @click="profile">
                   <center>
-                    <img v-bind:src="'http://localhost:8081/' + user.photo" class="user-image-dropdown" alt="User Image">
+                    <img v-bind:src="'http://localhost:8080/' + user.photo" class="user-image-dropdown" alt="User Image">
                     <q-tooltip
                     transition-show="rotate"
                     transition-hide="rotate">
@@ -37,6 +37,8 @@
                   </center>
                 </q-item-section>
             </q-item>
+            <div style="margin-top: 8px;" class="text-center">{{user.email}}</div>
+            <div style="margin-top: 8px;" class="text-center">{{user.role}}</div>
             <q-item clickable @click="logout">
               <q-item-section>
                 <q-btn :icon="'logout'">
@@ -95,15 +97,7 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
-
-const linksData = [
-  {
-    title: 'Dashboard',
-    caption: 'Home',
-    icon: 'home',
-    link: '/dashboard'
-  }
-];
+import linksData from 'boot/menu.js'
 
 export default {
   name: 'MainLayout',
@@ -142,7 +136,7 @@ export default {
         .post('/user/get-role', {email: vm.user.email})
         .then(function (result) {
           if (result.data) {
-            vm.user_role = result.data.role_name
+            vm.user.role = result.data.role_name
           } else {
             console.log('Error')
           }
