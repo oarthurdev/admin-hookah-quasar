@@ -16,6 +16,7 @@ module.exports = function (/* ctx */) {
     // https://v1.quasar.dev/quasar-cli/prefetch-feature
     // preFetch: true,
 
+    animations: ['fadeIn', 'fadeOut'],
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v1.quasar.dev/quasar-cli/boot-files

@@ -92,9 +92,9 @@
     </q-drawer>
 
     <q-page-container>
-      <transition name="page" mode="out-in">
-        <router-view></router-view>
-      </transition>
+      <vue-page-transition name="fade-in-right">
+        <router-view />
+      </vue-page-transition>
     </q-page-container>
   </q-layout>
 </template>
@@ -102,10 +102,16 @@
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
 import linksData from 'boot/menu.js'
+import Vue from 'vue'
+import VuePageTransition from 'vue-page-transition'
+
+Vue.use(VuePageTransition)
 
 export default {
   name: 'MainLayout',
-  components: { EssentialLink },
+  components: { 
+    EssentialLink
+  },
   data () {
     return {
       leftDrawerOpen: false,
@@ -189,10 +195,6 @@ export default {
   height: 35px;
   border-radius: 50px;
   margin-right: 10px;
-}
-
-.q-layout {
-  min-height: 0 !important;
 }
 
 .user-image-dropdown {

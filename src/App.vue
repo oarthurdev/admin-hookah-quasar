@@ -1,10 +1,14 @@
 <template>
-  <div id="q-app">
-    <main-layout/>
+   <div id="q-app" v-if="!token || token == null">
+    <login></login>
+  </div>
+  <div id="q-app" v-else>
+    <main-layout />
   </div>
 </template>
 <script>
 import MainLayout from 'layouts/MainLayout'
+import Login from 'layouts/LoginLayout'
 
 export default {
   name: 'App',
@@ -19,10 +23,12 @@ export default {
     }
   },
   components: {
-    'main-layout': MainLayout
+    'main-layout': MainLayout,
+    'login': Login
   }
 }
 </script>
+    MainLayout
 <style lang="scss">
 body, html{
   height: 100%;

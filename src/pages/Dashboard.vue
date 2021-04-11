@@ -1,6 +1,6 @@
 <template>
     <center>
-        <h4>Dashboard</h4>
+        <h5>Dashboard</h5>
     </center>
 </template>
 <script>

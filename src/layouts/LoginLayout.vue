@@ -16,3 +16,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.q-page-container {
+    float: inherit !important;
+    margin-left: 0 !important;
+}
+</style>

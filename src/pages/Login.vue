@@ -55,7 +55,6 @@ export default {
             self.$awn.alert('User and password cannot be empty.')
             return false
           } else if (result.data.auth) {
-            console.log('aaa')
             localStorage.setItem('token', result.data.token)
             localStorage.setItem('email', result.data.email)
             self.$router.push('/dashboard')
