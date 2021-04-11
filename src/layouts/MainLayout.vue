@@ -12,7 +12,9 @@
         />
 
         <q-toolbar-title>
+          <router-link to="/dashboard">
           Hookah Finder
+          </router-link>
         </q-toolbar-title>
 
         <div id="dropdownUser">
@@ -26,28 +28,28 @@
           <q-menu fit>
           <q-list style="min-width: 100px">
             <q-item clickable>
-                <q-item-section @click="profile">
-                  <center>
-                    <img v-bind:src="'http://localhost:8080/' + user.photo" class="user-image-dropdown" alt="User Image">
-                    <q-tooltip
-                    transition-show="rotate"
-                    transition-hide="rotate">
-                    Profile
-                  </q-tooltip>
-                  </center>
-                </q-item-section>
+              <q-item-section @click="profile">
+                <center>
+                  <img v-bind:src="'http://localhost:8080/' + user.photo" class="user-image-dropdown" alt="User Image">
+                  <q-tooltip
+                  transition-show="rotate"
+                  transition-hide="rotate">
+                  Profile
+                </q-tooltip>
+                </center>
+              </q-item-section>
             </q-item>
             <div style="margin-top: 8px;" class="text-center">{{user.email}}</div>
             <div style="margin-top: 8px;" class="text-center">{{user.role}}</div>
             <q-item clickable @click="logout">
               <q-item-section>
                 <q-btn :icon="'logout'">
-                <q-tooltip
-                  transition-show="rotate"
-                  transition-hide="rotate">
-                  Logout
-                </q-tooltip>
-              </q-btn>
+                  <q-tooltip
+                    transition-show="rotate"
+                    transition-hide="rotate">
+                    Logout
+                  </q-tooltip>
+                </q-btn>
               </q-item-section>
             </q-item>
           </q-list>
@@ -90,7 +92,9 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <transition name="page" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </q-page-container>
   </q-layout>
 </template>
@@ -119,6 +123,7 @@ export default {
   },
   created () {
     let vm = this
+    console.log(vm.currentRouteName)
     vm.user.email = localStorage.getItem('email')
     vm.token = localStorage.getItem('token')
 
@@ -151,10 +156,9 @@ export default {
         this.$q.dark.set(false)
         this.onOrOff = 'off'
       }
-
-      localStorage.setItem('dark', this.$q.dark.isActive)
     },
     logout (e) {
+      const self = this
       e.preventDefault()
       this.$axios
         .post('logout', {token: this.token})
@@ -163,7 +167,7 @@ export default {
           if (result.data) {
             console.log(result.data)
             localStorage.clear()
-            window.close()
+            self.$router.push('/')
           } else {
             console.log('Error')
           }
@@ -176,7 +180,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style>
 .toggleDarkMode {
   float: right;
 }
@@ -185,6 +189,10 @@ export default {
   height: 35px;
   border-radius: 50px;
   margin-right: 10px;
+}
+
+.q-layout {
+  min-height: 0 !important;
 }
 
 .user-image-dropdown {

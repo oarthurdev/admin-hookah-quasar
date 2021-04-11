@@ -2,6 +2,7 @@
 const routes = [
   {
     path: '/',
+    name: 'Login',
     component: () => import('layouts/LoginLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Login.vue') }
@@ -9,6 +10,7 @@ const routes = [
   },
   {
     path: '/register',
+    name: 'Register',
     component: () => import('layouts/RegisterLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Register.vue') }
@@ -16,6 +18,7 @@ const routes = [
   },
   {
     path: '/profile',
+    name: 'Profile',
     component: () => import('layouts/user/ProfileLayout.vue'),
     children: [
       { path: '', component: () => import('pages/user/Profile.vue') }
@@ -23,9 +26,10 @@ const routes = [
   },
   {
     path: '/dashboard',
-    component: () => import('layouts/MainLayout.vue'),
+    name: 'Dashboard',
+    component: () => import('layouts/DashboardLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      { path: '', component: () => import('pages/Dashboard.vue') }
     ]
   },
 

@@ -1,20 +1,25 @@
 <template>
   <div id="q-app">
-    <router-view />
+    <main-layout/>
   </div>
 </template>
 <script>
+import MainLayout from 'layouts/MainLayout'
+
 export default {
   name: 'App',
   data () {
     return {
-      darkMode: false
+      token: localStorage.getItem('token')
     }
   },
-  created () {
-    let vm = this
-    vm.darkMode = localStorage.getItem('dark')
-    this.$q.dark.set(vm.darkMode)
+  mounted () {
+    if (token == null) {
+      window.location.href = '/'
+    }
+  },
+  components: {
+    'main-layout': MainLayout
   }
 }
 </script>
@@ -29,6 +34,19 @@ body {
   font-weight: 400;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition-property: opacity;
+  transition-duration: .25s;
+}
+
+.fade-enter-active {
+  transition-delay: .25s;
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0
 }
 
 #app {

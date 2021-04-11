@@ -12,7 +12,7 @@
         </md-field>
         <md-field md-has-password>
           <label>Password</label>
-          <md-input v-model="formularioLogin.senha" type="password"></md-input>
+          <md-input v-model="formularioLogin.senha" type="password" @keydown.enter.prevent="submit"></md-input>
         </md-field>
       </div>
       <div class="actions md-layout md-alignment-center-space-between">
@@ -48,15 +48,17 @@ export default {
       this.$axios
         .post('/login', { email: this.formularioLogin.email, password: this.formularioLogin.senha })
         .then(function (result) {
+          console.log(result.data)
           if (result.data.noExist) {
             self.$awn.alert('Email does not exist in our system.')
           } else if (result.data.isEmpty) {
             self.$awn.alert('User and password cannot be empty.')
             return false
           } else if (result.data.auth) {
+            console.log('aaa')
             localStorage.setItem('token', result.data.token)
             localStorage.setItem('email', result.data.email)
-            window.open('/#/dashboard', 'janela1', 'directories=no, location=no, menubar=no, scrollbars=no, status=no, toolbar=no, resizable=no')
+            self.$router.push('/dashboard')
           } else {
             self.$awn.alert('Wrong email or password, try again.')
           }
@@ -67,6 +69,9 @@ export default {
     },
     limpar () {
       this.formularioLogin = {}
+    },
+    submit() {
+      this.logar()
     }
   }
 }

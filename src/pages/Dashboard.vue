@@ -1,11 +1,11 @@
 <template>
     <center>
-        <h4>Profile</h4>
+        <h4>Dashboard</h4>
     </center>
 </template>
 <script>
 export default {
-  name: 'Profile',
+  name: 'Dashboard',
   data () {
     return {
     }

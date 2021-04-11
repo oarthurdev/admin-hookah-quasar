@@ -19,6 +19,17 @@ Vue.use(VueTelInput)
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
+    state: {
+      darkMode: false
+    },
+    mutations: {
+      change(state, dark) {
+        state.darkMode = dark
+      }
+    },
+    getters: {
+      dark: state => state.darkMode
+    },
     modules: {
       // example
     },
@@ -27,6 +38,7 @@ export default function (/* { ssrContext } */) {
     // for dev mode only
     strict: process.env.DEBUGGING
   })
+
 
   return Store
 }
