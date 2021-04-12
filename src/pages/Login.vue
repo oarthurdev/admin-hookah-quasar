@@ -57,7 +57,7 @@ export default {
           } else if (result.data.auth) {
             localStorage.setItem('token', result.data.token)
             localStorage.setItem('email', result.data.email)
-            self.$router.push('/dashboard')
+            window.location.href = '/dashboard'
           } else {
             self.$awn.alert('Wrong email or password, try again.')
           }

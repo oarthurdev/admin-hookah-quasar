@@ -92,6 +92,7 @@
     </q-drawer>
 
     <q-page-container>
+      <Breadcrumbs />
       <vue-page-transition name="fade-in-right">
         <router-view />
       </vue-page-transition>
@@ -104,20 +105,22 @@ import EssentialLink from 'components/EssentialLink.vue'
 import linksData from 'boot/menu.js'
 import Vue from 'vue'
 import VuePageTransition from 'vue-page-transition'
+import Breadcrumbs from 'components/Breadcrumbs'
 
 Vue.use(VuePageTransition)
 
 export default {
   name: 'MainLayout',
   components: { 
-    EssentialLink
+    EssentialLink,
+    Breadcrumbs 
   },
   data () {
     return {
       leftDrawerOpen: false,
       essentialLinks: linksData,
       el: '',
-      darkMode: false,
+      darkMode: true,
       onOrOff: 'on',
       user: {
         email: '',
@@ -129,7 +132,6 @@ export default {
   },
   created () {
     let vm = this
-    console.log(vm.currentRouteName)
     vm.user.email = localStorage.getItem('email')
     vm.token = localStorage.getItem('token')
 
@@ -173,7 +175,7 @@ export default {
           if (result.data) {
             console.log(result.data)
             localStorage.clear()
-            self.$router.push('/')
+            window.location.href = '/'
           } else {
             console.log('Error')
           }
