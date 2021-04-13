@@ -21,6 +21,16 @@ export default {
   mounted () {
     const self = this
     self.token = localStorage.getItem('token')
+
+console.log(self.$router)
+    if(self.token !== null && $self.router.path == '/') {
+      self.$router.push ('/dashboard')
+      return false
+    }
+    else if (self.token == null) {
+      self.$router.push ('/')
+      return false
+    }
   },
   components: {
     'main-layout': MainLayout,
