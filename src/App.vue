@@ -1,5 +1,5 @@
 <template>
-   <div id="q-app" v-if="!token || token == null">
+   <div id="q-app" v-if="token == null">
     <login></login>
   </div>
   <div id="q-app" v-else>
@@ -9,18 +9,18 @@
 <script>
 import MainLayout from 'layouts/MainLayout'
 import Login from 'layouts/LoginLayout'
+require('vue-awesome-notifications/dist/styles/style.css')
 
 export default {
   name: 'App',
   data () {
     return {
-      token: localStorage.getItem('token')
+      token: null
     }
   },
   mounted () {
-    if (token == null) {
-      window.location.href = '/'
-    }
+    const self = this
+    self.token = localStorage.getItem('token')
   },
   components: {
     'main-layout': MainLayout,

@@ -58,6 +58,12 @@
       </q-toolbar>
     </q-header>
 
+    <q-footer elevated>
+      <q-toolbar>
+        <q-toolbar-title align="right"><font size="4pt">Hookah Finder - Copyright &#9400; 2021</font></q-toolbar-title>
+      </q-toolbar>
+    </q-footer>
+
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above

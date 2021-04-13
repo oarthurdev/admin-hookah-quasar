@@ -41,6 +41,13 @@ export default {
       formularioLogin: {}
     }
   },
+  mounted () {
+    const self = this
+    self.token = localStorage.getItem('token')
+    if (self.$route.path === '/' && (self.token !== null)) {
+      window.location.href = '/dashboard'
+    }
+  },
   methods: {
     async logar () {
       const self = this
