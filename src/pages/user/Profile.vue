@@ -17,7 +17,7 @@
       </q-card-section>
     </center>
   </q-card>
- <q-card flat bordered class="my-card" style="margin-left: 50px;">
+ <q-card flat bordered class="card-update-profile" style="margin-left: 50px;">
     <center>
       <q-card-section>
         <div class="text-h6" style="margin-bottom: 20px;">Update your data</div>
@@ -70,7 +70,7 @@
         buttonClass="btn"
         :customStrings="{
           upload: '<h1>Bummer!</h1>',
-          drag: 'Drag a 😺 GIF or GTFO'
+          drag: 'Upload a profile picture'
         }">
       </picture-input>
       <div>
@@ -179,5 +179,9 @@ export default {
   max-width: 600px;
   width: 500px;
   margin-left: 10px;
+}
+
+.card-update-profile {
+  min-width: 900px;
 }
 </style>
