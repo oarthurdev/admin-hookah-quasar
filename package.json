@@ -10,6 +10,7 @@
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build",
+    "deploy": "push-dir --dir=dist/spa --remote=gh-pages --branch=master",
     "start": "node server.js",
     "heroku-postbuild": "yarn && yarn build",
     "build:pwa": "quasar build -m pwa",
@@ -55,7 +56,8 @@
     "electron-devtools-installer": "^3.1.1",
     "electron-packager": "^14.2.1",
     "eslint": "^7.21.0",
-    "eslint-config-prettier": "^8.1.0"
+    "eslint-config-prettier": "^8.1.0",
+    "push-dir": "^0.4.1"
   },
   "browserslist": [
     "last 10 Chrome versions",
