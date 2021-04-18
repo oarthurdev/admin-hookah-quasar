@@ -85,15 +85,31 @@
         >
           Main Navigation
         </q-item-label>
-        <router-link v-for="link in essentialLinks"
+        <router-link v-for="link in geralM"
                      v-bind:key="link.link"
                      v-bind:to="link.link"
                      class="text-grey-8">
-          <EssentialLink
+          <GeralMenu
             :key="link.title"
             v-bind="link"
           />
         </router-link>
+        <q-expansion-item
+        v-for="menu in menuGeral"
+        expand-separator
+        :icon="menu.icon"
+        :label="menu.title"
+        :caption="menu.caption"
+        v-bind:key="menu.title"
+      >
+      <router-link v-bind:to="menu.submenu.link"
+                     class="text-grey-8">
+          <LoungeMenu
+              :title="menu.submenu.title"
+              :captions="menu.submenu.caption"
+              :icon="menu.submenu.icon"/>
+      </router-link>
+        </q-expansion-item>
       </q-list>
     </q-drawer>
 
@@ -107,8 +123,10 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
-import linksData from 'boot/menu.js'
+import GeralMenu from 'src/components/menu/GeralMenu.vue'
+import LoungeMenu from 'src/components/menu/LoungeMenu.vue'
+import geralMenu from 'src/components/menu/js/geral.js'
+import menu from 'src/components/menu/js/menu.js'
 import Vue from 'vue'
 import VuePageTransition from 'vue-page-transition'
 import Breadcrumbs from 'components/Breadcrumbs'
@@ -118,13 +136,14 @@ Vue.use(VuePageTransition)
 export default {
   name: 'MainLayout',
   components: { 
-    EssentialLink,
+    GeralMenu,
+    LoungeMenu,
     Breadcrumbs 
   },
   data () {
     return {
       leftDrawerOpen: false,
-      essentialLinks: linksData,
+      geralM: geralMenu,
       el: '',
       darkMode: true,
       onOrOff: 'on',
@@ -133,7 +152,8 @@ export default {
         photo: '',
         role: ''
       },
-      token: null
+      token: null,
+      menuGeral: menu
     }
   },
   created () {
@@ -141,6 +161,7 @@ export default {
     vm.user.email = localStorage.getItem('email')
     vm.token = localStorage.getItem('token')
 
+    console.log(vm.menuGeral)
     vm.$axios
         .post('/user/get-photo', {email: vm.user.email})
         .then(function (result) {

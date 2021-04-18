@@ -25,6 +25,14 @@ const routes = [
     ]
   },
   {
+    path: '/store/register',
+    name: 'RegisterStore',
+    component: () => import('layouts/store/StoreLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/store/Register.vue') }
+    ]
+  },
+  {
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import('layouts/DashboardLayout.vue'),

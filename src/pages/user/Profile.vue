@@ -28,36 +28,30 @@
       <q-input
         filled
         v-model="user.email"
-        label="Your email *"
+        label="Your email"
         disable
-        style="margin-bottom: 35px;"
       />
 
       <q-input
         filled
         type="password"
         v-model="user.password"
-        label="Your password *"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
+        label="Your password"
       />
 
       <q-input
         filled
         type="password"
         v-model="user.passwordR"
-        label="Your new password *"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
+        label="Your new password"
       />
 
       <q-input
         filled
         type="password"
         v-model="user.passwordRR"
-        label="Repeat password *"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
+        label="Repeat password"
+        style="margin-bottom: 35px;"
       />
       <picture-input 
         ref="pictureInput" 
