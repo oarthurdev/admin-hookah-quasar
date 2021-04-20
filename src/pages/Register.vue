@@ -25,7 +25,7 @@
         <md-field>
             <vue-phone-number-input v-model="user.phone" style='width: 100%;'/>
         </md-field>
-       
+        <q-toggle v-model="accept" label="I accept the license and terms" />
       </div>
       <div class="actions md-layout md-alignment-center-space-between">
         <router-link to="/">Login</router-link>
@@ -61,12 +61,21 @@ export default {
         fullname: '',
         TOS: null,
         showDialog: false
-      }
+      },
+      accept: false
     }
   },
   methods: {
     register () {
       const vm = this
+      if (vm.accept !== true) {
+          this.$q.notify({
+            color: 'negative',
+            message: 'You need to accept the license and terms first'
+          })
+        return false
+      }
+      
       const options = {
         url: '/register',
         method: 'POST',

@@ -105,8 +105,9 @@
       <router-link v-bind:to="menu.submenu.link"
                      class="text-grey-8">
           <LoungeMenu
+              :link="menu.submenu.link"
               :title="menu.submenu.title"
-              :captions="menu.submenu.caption"
+              :caption="menu.submenu.caption"
               :icon="menu.submenu.icon"/>
       </router-link>
         </q-expansion-item>

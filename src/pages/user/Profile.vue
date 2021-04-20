@@ -22,7 +22,7 @@
       <q-card-section>
         <div class="text-h6" style="margin-bottom: 20px;">Update your data</div>
         <q-form
-      @submit="submit"
+        @submit="submit"
       class="q-gutter-md"
     >
       <q-input
@@ -68,7 +68,7 @@
         }">
       </picture-input>
       <div>
-        <q-btn class="float-right" style="margin-bottom: 10px;" label="Submit" type="submit" color="primary"/>
+        <q-btn class="float-right" style="margin-bottom: 10px;" v-on:click="submit" label="Submit" type="submit" color="primary"/>
       </div>
     </q-form>
       </q-card-section>
@@ -122,6 +122,9 @@ export default {
   methods: {
     submit (e) {
       let vm = this
+      this.$refs.user.password.validate()
+      this.$refs.user.passwordR.validate()
+      this.$refs.user.passwordRR.validate()
       e.preventDefault()
       this.$axios.post('/user/upload-image', {image: vm.image, email: vm.user.email}
           ).then(function (result) {

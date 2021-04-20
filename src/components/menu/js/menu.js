@@ -5,9 +5,9 @@ const menu = [
     caption: 'Manage your store',
     submenu: {
         title: 'Register',
-        icon: 'done',
+        icon: 'add',
         link: '/store/register',
-        caption: ''
+        caption: 'Add a new store'
     }
 }
 // {
@@ -17,7 +17,7 @@ const menu = [
 //     submenu: {
 //         title: 'Register',
 //         icon: 'home',
-//         link: '/lounge/register',
+//         link: '/product/register',
 //         caption: ''
 //     }
 // }
