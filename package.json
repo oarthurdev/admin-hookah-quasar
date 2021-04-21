@@ -46,7 +46,8 @@
     "vue-place-autocomplete": "^0.5.3",
     "vue-places": "^2.2.2",
     "vue-search-select": "^2.9.3",
-    "vue-tel-input": "^5.2.0"
+    "vue-tel-input": "^5.2.0",
+    "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",

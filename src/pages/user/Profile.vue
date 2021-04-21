@@ -122,9 +122,6 @@ export default {
   methods: {
     submit (e) {
       let vm = this
-      this.$refs.user.password.validate()
-      this.$refs.user.passwordR.validate()
-      this.$refs.user.passwordRR.validate()
       e.preventDefault()
       this.$axios.post('/user/upload-image', {image: vm.image, email: vm.user.email}
           ).then(function (result) {

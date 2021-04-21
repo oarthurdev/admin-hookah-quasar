@@ -25,14 +25,34 @@
         <md-field>
             <vue-phone-number-input v-model="user.phone" style='width: 100%;'/>
         </md-field>
-        <q-toggle v-model="accept" label="I accept the license and terms" />
+        <div class="div-tos">
+          <q-checkbox style="margin-top: -3px" v-model="accept" color="green"/>
+          <span class="label">I accept the <a style="cursor: pointer;" v-on:click="icon = true">license and terms.</a></span>
+        </div>
       </div>
+      <div style="margin-top: 20px">
       <div class="actions md-layout md-alignment-center-space-between">
-        <router-link to="/">Login</router-link>
-        <md-button class="md-raised md-primary" @click="register">Register</md-button>
+          <router-link to="/">Login</router-link>
+          <md-button class="md-raised md-primary" @click="register">Register</md-button>
+        </div>
       </div>
     </md-content>
     <div class="background" />
+    <div class="q-pa-md q-gutter-sm">
+    <q-dialog v-model="icon">
+      <q-card>
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">Terms of Use</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    </div>
   </div>
 </template>
 
@@ -62,7 +82,8 @@ export default {
         TOS: null,
         showDialog: false
       },
-      accept: false
+      accept: false,
+      icon: false
     }
   },
   methods: {

@@ -9,40 +9,47 @@
       class="q-gutter-md"
     >
       <q-input
+        ref="storeN"
         filled
         v-model="store.name"
         label="Store name"
         :rules="[
-          val => !!val || '* Required',
-          val => val.length < 2 || 'Please use maximum 1 character',
+          val => !!val || '* Field Required'
         ]"
         lazy-rules
       />
 
       <q-input
+      ref="storeD"
       v-model="store.description"
       filled
       type="textarea"
       label="Store Description"
       :rules="[
-          val => !!val || '* Required',
-          val => val.length < 2 || 'Please use maximum 1 character',
+          val => !!val || '* Field Required'
         ]"
       lazy-rules
       />
 
       <q-input
+        ref="storeP"
         filled
         v-model="store.phone"
         label="Store Phone"
         mask="(##) #### - ####"
         :rules="[
-          val => !!val || '* Required',
-          val => val.length < 2 || 'Please use maximum 1 character',
+          val => !!val || '* Field Required'
         ]"
       lazy-rules
       />
 
+      <!-- <q-input
+        ref="storea"
+        filled
+        v-model="store.address"
+        label="Store Address"
+        for="address"
+        /> -->
       <q-select
           filled
           v-model="store.items"
@@ -114,11 +121,25 @@ export default {
       searchText: '',
       lastSelectItem: {},
       image: null,
-      options: []
+      options: [],
+      token: null
     }
   },
   mounted () {
+    this.storea = new google.maps.places.Autocomplete(
+// (this.$refs.autocomplete),
+    (document.getElementById("address")),
+      {types: ['geocode']}
+      );
+      this.storea.addListener('place_changed', () => {
+      let place = this.storea.getPlace();
+      let ac = place.address_components;
+      console.log(ac);
+      });
+
       const vm = this
+      vm.token = localStorage.getItem('token')
+
       vm.$axios.get('category/get-all').then(function (result) {
         if (result.data) {
           vm.options = result.data
@@ -153,6 +174,11 @@ export default {
     submit (e) {
       let vm = this
       e.preventDefault()
+      if(this.$refs.storeN.validate() &&
+         this.$refs.storeD.validate() &&
+         this.$refs.storeP.validate()) {
+
+         
       this.$axios.post('/lounge/upload-image', {image: vm.image, email: vm.user.email}
           ).then(function (result) {
             if (result.data) {
@@ -160,12 +186,14 @@ export default {
             }
           })
       let promise = this.$axios
-        .post('/lounge/register', {name: vm.store.name, description: vm.store.description, phone: vm.store.phone, address: vm.store.address, name_file: vm.store.name_file, products: vm.store.items})
+        .post('/lounge/register', {name: vm.store.name, description: vm.store.description, phone: vm.store.phone, name_file: vm.store.name_file, products: vm.store.items, token: vm.token})
         .then(function (result) {
           if (result.data) {
-            console.log(result.data)
+            const msg = '<b>' + vm.store.name + '</b> has registered successfully.'
+            vm.$awn.async(promise, msg)
           }
         })
+        }
     },
     onSelect (items, lastSelectItem) {
       this.items = items
