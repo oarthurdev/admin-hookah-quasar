@@ -22,23 +22,28 @@
 
             <center>
                 <q-card-section>
-                    <q-btn round color="red" icon="delete" @click="confirm = true; store_id = stores.store_id" class="margin-right">
+                    <q-btn round color="red" icon="delete" @click="prompt = true; store_id = stores.store_id; store_name = stores.name" class="margin-right">
                         <q-tooltip
                         transition-show="rotate"
                         transition-hide="rotate">
                         Delete
                         </q-tooltip>
-                        <q-dialog v-model="confirm" persistent>
-                            <q-card>
-                                <q-card-section class="row items-center">
-                                <span class="q-ml-sm">Do you really want to delete the <b>{{stores.name}}</b> lounge?</span>
+                        <q-dialog v-model="prompt" persistent>
+                            <q-card style="min-width: 350px">
+                                <q-card-section>
+                                <div style="font-size: 13pt;">Please type <b>{{stores.name}}</b> to confirm the deletion.</div>
                                 </q-card-section>
 
-                                <q-card-actions align="right">
-                                <q-btn flat label="Cancel" color="primary" v-close-popup />
-                                <q-btn flat label="Delete" @click="deleteStore(store_id)" color="red"  v-close-popup />
+                                <q-card-section class="q-pt-none">
+                                <q-input dense v-model="storeNameConfirm" autofocus @keyup="confirmDelete(storeNameConfirm, store_name)"/>
+                                </q-card-section>
+
+                                <q-card-actions align="right" class="text-primary">
+                                <q-btn flat label="Cancel" v-close-popup />
+                                <q-btn flat label="Delete" id="btn_delete" color="red" @click="deleteStore(store_id)" :disabled="disabled" v-close-popup />
                                 </q-card-actions>
                             </q-card>
+                                <!-- <q-btn flat label="Delete" @click="deleteStore(store_id)" color="red"  v-close-popup /> -->
                             </q-dialog>
                     </q-btn>
                     <q-btn round color="secondary" icon="edit" class="margin-right">
@@ -72,8 +77,11 @@ export default {
             token: null
         },
         store: {},
-        confirm: false,
-        store_id: null
+        prompt: false,
+        store_id: null,
+        storeNameConfirm: null,
+        store_name: null,
+        disabled: true
     }
   },
   created () {
@@ -89,8 +97,15 @@ export default {
                     const msg = "<b>" + result.data.name + '</b> has deleted successfully.'
                     vm.$awn.alert(msg)
                     vm.getAllStore()
+                    vm.storeNameConfirm = null
+                    vm.disabled = true
                 }
             })
+      },
+      confirmDelete (confirmName, nameStore) {
+          if (confirmName === nameStore) {
+              this.disabled = false
+          }
       },
       getAllStore () {
         const self = this
