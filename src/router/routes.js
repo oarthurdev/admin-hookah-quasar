@@ -33,6 +33,14 @@ const routes = [
     ]
   },
   {
+    path: '/store/manage',
+    name: 'ManageStore',
+    component: () => import('layouts/store/ManageLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/store/Manage.vue') }
+    ]
+  },
+  {
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import('layouts/DashboardLayout.vue'),

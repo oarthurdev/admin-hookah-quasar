@@ -102,13 +102,13 @@
         :caption="menu.caption"
         v-bind:key="menu.title"
       >
-      <router-link v-bind:to="menu.submenu.link"
+      <router-link v-for="submenu in menu.submenu" v-bind:key="submenu.title" v-bind:to="submenu.link"
                      class="text-grey-8">
           <LoungeMenu
-              :link="menu.submenu.link"
-              :title="menu.submenu.title"
-              :caption="menu.submenu.caption"
-              :icon="menu.submenu.icon"/>
+              :link="submenu.link"
+              :title="submenu.title"
+              :caption="submenu.caption"
+              :icon="submenu.icon"/>
       </router-link>
         </q-expansion-item>
       </q-list>

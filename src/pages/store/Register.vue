@@ -36,7 +36,7 @@
         filled
         v-model="store.phone"
         label="Store Phone"
-        mask="(##) #### - ####"
+        mask="(##) ##### - ####"
         :rules="[
           val => !!val || '* Field Required'
         ]"
@@ -179,7 +179,7 @@ export default {
          this.$refs.storeP.validate()) {
 
          
-      this.$axios.post('/lounge/upload-image', {image: vm.image, email: vm.user.email}
+      this.$axios.post('/lounge/upload-image', {image: vm.image, email: vm.user.email, store_name: vm.store.name}
           ).then(function (result) {
             if (result.data) {
               vm.store.name_file = result.data.name_file
