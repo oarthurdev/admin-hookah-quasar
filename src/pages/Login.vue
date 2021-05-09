@@ -8,11 +8,11 @@
       <div class="form">
         <md-field>
           <label>Email</label>
-          <md-input v-model="formularioLogin.email" autofocus></md-input>
+          <md-input v-model="user.email" autofocus></md-input>
         </md-field>
         <md-field md-has-password>
           <label>Password</label>
-          <md-input v-model="formularioLogin.senha" type="password" @keydown.enter.prevent="submit"></md-input>
+          <md-input v-model="user.password" type="password" @keydown.enter.prevent="submit"></md-input>
         </md-field>
       </div>
       <div class="actions md-layout md-alignment-center-space-between">
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import User from '../models/user';
 import Vue from 'vue'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
@@ -38,39 +39,20 @@ export default {
   data () {
     return {
       loading: false,
-      formularioLogin: {}
-    }
-  },
-  mounted () {
-    const self = this
-    self.token = localStorage.getItem('token')
-    if (self.$route.path === '/' && (self.token !== null)) {
-      window.location.href = '/dashboard'
+      user: new User('', '')
     }
   },
   methods: {
     async logar () {
-      const self = this
-      try {
-      this.$axios
-        .post('/login', { email: this.formularioLogin.email, password: this.formularioLogin.senha })
-        .then(function (result) {
-          console.log(result.data)
-          if (result.data.noExist) {
-            self.$awn.alert('Email does not exist in our system.')
-          } else if (result.data.isEmpty) {
-            self.$awn.alert('User and password cannot be empty.')
-            return false
-          } else if (result.data.auth) {
-            localStorage.setItem('token', result.data.token)
-            localStorage.setItem('email', result.data.email)
-            window.location.href = '/dashboard'
-          } else {
-            self.$awn.alert('Wrong email or password, try again.')
+      if (this.user.email && this.user.password) {
+        this.$store.dispatch('auth/login', this.user).then(
+          () => {
+            this.$router.push('/dashboard');
+          },
+          error => {
+            console.log('error')
           }
-        })
-      } catch (erro) {
-        console.log('Dados com o erro', erro)
+        );
       }
     },
     limpar () {

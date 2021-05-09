@@ -98,7 +98,7 @@ export default {
       }
       
       const options = {
-        url: '/register',
+        url: '/api/auth/register',
         method: 'POST',
         data: {
           name: vm.user.name,

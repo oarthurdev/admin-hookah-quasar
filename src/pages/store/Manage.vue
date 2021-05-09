@@ -109,6 +109,7 @@
                                         v-model="store_name"
                                         label="Store name"
                                         class="margin-bottom"
+                                        disable
                                     />
                                     <q-input
                                         filled
@@ -183,7 +184,7 @@ export default {
   data () {
     return {
         user: {
-            token: null
+            email: null
         },
         store: {},
         prompt: false,
@@ -218,7 +219,7 @@ export default {
       deleteStore (store_id) {
           const vm = this
           this.$axios
-            .post('/lounge/delete', {store_id: store_id})
+            .post('/api/lounge/delete', {store_id: store_id})
             .then(function (result) {
                 if (result.data) {
                     const msg = "<b>" + result.data.name + '</b> has deleted successfully.'
@@ -241,10 +242,10 @@ export default {
       },
       getAllStore () {
         const self = this
-        self.user.token = localStorage.getItem('token')
+        self.user.email = localStorage.getItem('email')
 
         this.$axios
-        .post('/lounge/get-all', {token: self.user.token})
+        .post('/api/lounge/get-all', {email: self.user.email})
         .then(function (result) {
             if (result.data) {
                 self.store = result.data.lounge
@@ -257,13 +258,22 @@ export default {
       editStore (e) {
           e.preventDefault()
           const self = this
-          this.$axios
-            .post('/lounge/update', {name_store: self.store_name, description_store: self.store_description, address_store: self.store_address, phone_store: self.store_phone, token: self.user.token, name_file: 'teste.jpg'})
-            .then(function (result) {
-                if (result.data) {
-                    console.log(result.data)
-                }
-            })
+          let promise = this.$axios.post('/api/lounge/update', {store_id: self.store_id,
+                                                            description_store: self.store_description, 
+                                                            address_store: self.store_address, 
+                                                            phone_store: self.store_phone, 
+                                                            token: self.user.token, 
+                                                            name_file: 'teste.jpg'})
+                        .then(function (result) {
+                            if (result.data) {
+                                const msg = "<b>" + self.store_name + "</b> has updated successfully."
+                                self.$awn.async(promise, msg)
+                                self.dialog = false
+                                setTimeout(() => {
+                                    location.reload()
+                                    }, 5000)
+                            }
+                        })
       },
       onChange (image) {
         console.log('New picture selected!')

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { auth } from './auth.module'
 // import example from './module-example'
 import VueAWN from "vue-awesome-notifications"
 let options = {}
@@ -28,6 +29,7 @@ export default function (/* { ssrContext } */) {
       dark: state => state.darkMode
     },
     modules: {
+      auth
       // example
     },
 

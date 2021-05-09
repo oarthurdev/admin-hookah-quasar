@@ -162,9 +162,9 @@ export default {
     vm.user.email = localStorage.getItem('email')
     vm.token = localStorage.getItem('token')
 
-    console.log(vm.menuGeral)
+    console.log(vm.token)
     vm.$axios
-        .post('/user/get-photo', {email: vm.user.email})
+        .post('/api/user/get-photo', {email: vm.user.email})
         .then(function (result) {
           if (result.data) {
             vm.user.photo = result.data.profile_picture
@@ -174,7 +174,7 @@ export default {
           }
         })
     vm.$axios
-        .post('/user/get-role', {email: vm.user.email})
+        .post('/api/user/get-role', {email: vm.user.email})
         .then(function (result) {
           if (result.data) {
             vm.user.role = result.data.role_name
@@ -194,20 +194,7 @@ export default {
       }
     },
     logout (e) {
-      const self = this
-      e.preventDefault()
-      this.$axios
-        .post('logout', {token: this.token})
-        .then(function (result) {
-          console.log(result)
-          if (result.data) {
-            console.log(result.data)
-            localStorage.clear()
-            window.location.href = '/'
-          } else {
-            console.log('Error')
-          }
-        })
+      this.$store.dispatch('auth/logout');
     },
     profile () {
       const self = this

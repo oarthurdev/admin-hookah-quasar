@@ -101,7 +101,7 @@ export default {
     vm.user.email = localStorage.getItem('email')
     vm.token = localStorage.getItem('token')
     vm.$axios
-        .post('/user/get-photo', {email: vm.user.email})
+        .post('/api/user/get-photo', {email: vm.user.email})
         .then(function (result) {
           if (result.data) {
             vm.user.photo = result.data.profile_picture
@@ -110,7 +110,7 @@ export default {
           }
         })
     vm.$axios
-        .post('/user/get-role', {email: vm.user.email})
+        .post('/api/user/get-role', {email: vm.user.email})
         .then(function (result) {
           if (result.data) {
             vm.user.role = result.data.role_name
@@ -123,14 +123,14 @@ export default {
     submit (e) {
       let vm = this
       e.preventDefault()
-      this.$axios.post('/user/upload-image', {image: vm.image, email: vm.user.email}
+      this.$axios.post('/api/user/upload-image', {image: vm.image, email: vm.user.email}
           ).then(function (result) {
             if (result.data) {
               vm.user.name_file = result.data.name_file
             }
           })
       let promise = this.$axios
-        .post('/user/profile', {email: vm.user.email, password: vm.user.password, passwordR: vm.user.passwordR, passwordRR: vm.user.passwordRR, name_file: vm.user.name_file})
+        .post('/api/user/profile', {email: vm.user.email, password: vm.user.password, passwordR: vm.user.passwordR, passwordRR: vm.user.passwordRR, name_file: vm.user.name_file})
         .then(function (result) {
           console.log(result)
           if (result.data.diffPass) {

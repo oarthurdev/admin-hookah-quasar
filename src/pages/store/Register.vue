@@ -140,7 +140,7 @@ export default {
       const vm = this
       vm.token = localStorage.getItem('token')
 
-      vm.$axios.get('category/get-all').then(function (result) {
+      vm.$axios.get('/api/category/get-all').then(function (result) {
         if (result.data) {
           vm.options = result.data
         }
@@ -152,7 +152,7 @@ export default {
     vm.token = localStorage.getItem('token')
 
     vm.$axios
-        .post('/user/get-photo', {email: vm.user.email})
+        .post('/api/user/get-photo', {email: vm.user.email})
         .then(function (result) {
           if (result.data) {
             vm.user.photo = result.data.profile_picture
@@ -161,7 +161,7 @@ export default {
           }
         })
     vm.$axios
-        .post('/user/get-role', {email: vm.user.email})
+        .post('/api/user/get-role', {email: vm.user.email})
         .then(function (result) {
           if (result.data) {
             vm.user.role = result.data.role_name
@@ -179,14 +179,14 @@ export default {
          this.$refs.storeP.validate()) {
 
          
-      this.$axios.post('/lounge/upload-image', {image: vm.image, email: vm.user.email, store_name: vm.store.name}
+      this.$axios.post('/api/lounge/upload-image', {image: vm.image, email: vm.user.email, store_name: vm.store.name}
           ).then(function (result) {
             if (result.data) {
               vm.store.name_file = result.data.name_file
             }
           })
       let promise = this.$axios
-        .post('/lounge/register', {name: vm.store.name, description: vm.store.description, phone: vm.store.phone, name_file: vm.store.name_file, products: vm.store.items, token: vm.token})
+        .post('/api/lounge/register', {name: vm.store.name, description: vm.store.description, phone: vm.store.phone, name_file: vm.store.name_file, products: vm.store.items, token: vm.token})
         .then(function (result) {
           if (result.data) {
             const msg = '<b>' + vm.store.name + '</b> has registered successfully.'

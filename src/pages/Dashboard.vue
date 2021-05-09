@@ -8,14 +8,18 @@ export default {
   name: 'Dashboard',
   data () {
     return {
+      user: {
+        email: null,
+        token: null
+      }
     }
   },
   created () {
     let vm = this
     vm.user.email = localStorage.getItem('email')
-    vm.token = localStorage.getItem('token')
+    vm.user.token = localStorage.getItem('token')
     vm.$axios
-        .post('/user/get-photo', {email: vm.user.email})
+        .post('/api/user/get-photo', {email: vm.user.email})
         .then(function (result) {
           if (result.data) {
             vm.user.photo = result.data.profile_picture
@@ -25,7 +29,7 @@ export default {
           }
         })
     vm.$axios
-        .post('/user/get-role', {email: vm.user.email})
+        .post('/api/user/get-role', {email: vm.user.email})
         .then(function (result) {
           if (result.data) {
             vm.user.role = result.data.role_name
