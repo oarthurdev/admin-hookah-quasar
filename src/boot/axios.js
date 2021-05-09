@@ -13,7 +13,8 @@ axios.defaults.headers.common['Accept'] = 'application/json'
 axios.defaults.adapter = httpAdapter
 
 axios.interceptors.request.use(function (config) {
-  const hash = localStorage.getItem('token')
+  var hash = JSON.parse(localStorage.getItem('token'));
+
   if (hash !== null) {
     config.headers['Authorization'] = hash
     config.headers = config.headers || {}

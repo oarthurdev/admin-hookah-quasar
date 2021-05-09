@@ -47,7 +47,7 @@ export default {
       if (this.user.email && this.user.password) {
         this.$store.dispatch('auth/login', this.user).then(
           () => {
-            this.$router.push('/dashboard');
+            location.href = '/dashboard'
           },
           error => {
             console.log('error')
