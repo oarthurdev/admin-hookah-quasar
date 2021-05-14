@@ -121,8 +121,7 @@ export default {
       searchText: '',
       lastSelectItem: {},
       image: null,
-      options: [],
-      token: null
+      options: []
     }
   },
   mounted () {
@@ -138,7 +137,6 @@ export default {
       });
 
       const vm = this
-      vm.token = localStorage.getItem('token')
 
       vm.$axios.get('/api/category/get-all').then(function (result) {
         if (result.data) {
@@ -149,10 +147,9 @@ export default {
   created () {
     let vm = this
     vm.user.email = localStorage.getItem('email')
-    vm.token = localStorage.getItem('token')
 
     vm.$axios
-        .post('/api/user/get-photo', {email: vm.user.email})
+        .get('/api/user/get-photo')
         .then(function (result) {
           if (result.data) {
             vm.user.photo = result.data.profile_picture
@@ -161,7 +158,7 @@ export default {
           }
         })
     vm.$axios
-        .post('/api/user/get-role', {email: vm.user.email})
+        .get('/api/user/get-role')
         .then(function (result) {
           if (result.data) {
             vm.user.role = result.data.role_name
@@ -186,7 +183,7 @@ export default {
             }
           })
       let promise = this.$axios
-        .post('/api/lounge/register', {name: vm.store.name, description: vm.store.description, phone: vm.store.phone, name_file: vm.store.name_file, products: vm.store.items, token: vm.token})
+        .post('/api/lounge/register', {name: vm.store.name, description: vm.store.description, phone: vm.store.phone, name_file: vm.store.name_file, products: vm.store.items})
         .then(function (result) {
           if (result.data) {
             const msg = '<b>' + vm.store.name + '</b> has registered successfully.'

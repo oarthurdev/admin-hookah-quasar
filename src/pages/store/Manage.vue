@@ -218,12 +218,12 @@ export default {
       },
       deleteStore (store_id) {
           const vm = this
-          this.$axios
+          let promise = this.$axios
             .post('/api/lounge/delete', {store_id: store_id})
             .then(function (result) {
                 if (result.data) {
-                    const msg = "<b>" + result.data.name + '</b> has deleted successfully.'
-                    vm.$awn.alert(msg)
+                    const msg = "<font color='red'><b>" + result.data.name + '</b> has deleted successfully.</font>'
+                    vm.$awn.async(promise, msg)
                     vm.getAllStore()
                     vm.storeNameConfirm = null
                     vm.disabled = true
@@ -245,7 +245,7 @@ export default {
         self.user.email = localStorage.getItem('email')
 
         this.$axios
-        .post('/api/lounge/get-all', {email: self.user.email})
+        .get('/api/lounge/get-all')
         .then(function (result) {
             if (result.data) {
                 self.store = result.data.lounge

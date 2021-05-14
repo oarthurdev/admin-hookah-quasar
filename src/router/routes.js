@@ -2,6 +2,10 @@
 const routes = [
   {
     path: '/',
+    redirect: '/login',
+  },
+  {
+    path: '/login',
     name: 'Login',
     component: () => import('layouts/LoginLayout.vue'),
     children: [

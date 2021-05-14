@@ -19,12 +19,11 @@ export default {
     }
   },
   created() {
-    if (this.loggedIn && this.$router.currentRoute.path == '/') {
-      this.$router.push('/dashboard');
-    }
-    else if (!this.loggedIn) {
+    if (this.loggedIn) {
+      // this.$router.push('/dashboard');
+    } else {
       this.$router.push('/');
-    } 
+    }
   },
   computed: {
     loggedIn() {

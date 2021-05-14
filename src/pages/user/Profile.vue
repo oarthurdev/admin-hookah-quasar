@@ -17,7 +17,7 @@
       </q-card-section>
     </center>
   </q-card>
- <q-card flat bordered class="card-update-profile" style="margin-left: 50px;">
+ <q-card flat bordered class="card-update-profile">
     <center>
       <q-card-section>
         <div class="text-h6" style="margin-bottom: 20px;">Update your data</div>
@@ -101,7 +101,7 @@ export default {
     vm.user.email = localStorage.getItem('email')
     vm.token = localStorage.getItem('token')
     vm.$axios
-        .post('/api/user/get-photo', {email: vm.user.email})
+        .get('/api/user/get-photo')
         .then(function (result) {
           if (result.data) {
             vm.user.photo = result.data.profile_picture
@@ -110,7 +110,7 @@ export default {
           }
         })
     vm.$axios
-        .post('/api/user/get-role', {email: vm.user.email})
+        .get('/api/user/get-role')
         .then(function (result) {
           if (result.data) {
             vm.user.role = result.data.role_name

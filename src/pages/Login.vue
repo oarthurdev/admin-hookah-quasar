@@ -42,6 +42,16 @@ export default {
       user: new User('', '')
     }
   },
+  created () {
+    if (this.$route.path === '/login' && this.loggedIn) {
+      window.location.href = '/dashboard'
+    }
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    }
+  },
   methods: {
     async logar () {
       if (this.user.email && this.user.password) {
