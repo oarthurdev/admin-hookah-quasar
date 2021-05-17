@@ -43,13 +43,14 @@
       lazy-rules
       />
 
-      <!-- <q-input
+      <q-input
         ref="storea"
         filled
         v-model="store.address"
         label="Store Address"
         for="address"
-        /> -->
+        />
+
       <q-select
           filled
           v-model="store.items"
@@ -125,6 +126,7 @@ export default {
     }
   },
   mounted () {
+    let self = this
     this.storea = new google.maps.places.Autocomplete(
 // (this.$refs.autocomplete),
     (document.getElementById("address")),

@@ -13,7 +13,7 @@
 
         <q-toolbar-title>
           <router-link to="/dashboard">
-          Hookah Finder
+          Hookah Finder - Admin Panel
           </router-link>
         </q-toolbar-title>
 

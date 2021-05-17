@@ -87,7 +87,25 @@ export default {
     }
   },
   methods: {
-    register () {
+    // register () {
+      
+
+    //   let promise = this.$axios(options).then(function (result) {
+    //     if (result.data.emailExist) {
+    //       vm.errorMsg = vm.user.email + ' is already registered, try another.'
+    //       vm.$awn.alert(vm.errorMsg)
+    //     } else if(result.data.empty) {
+    //       vm.$awn.alert('The form cannot contain empty fields.')
+    //     } else if(result.data.diffPass) {
+    //       vm.$awn.alert('The passwords you entered do not match.')
+    //     } else if (result.data) {
+    //       vm.$awn.async(promise, vm.user.name + ' registered successfully.')
+    //     } else {
+    //       vm.$awn.alert('Oops, something went wrong, try again later.')
+    //     }
+    //   })
+    // },
+    async register () {
       const vm = this
       if (vm.accept !== true) {
           this.$q.notify({
@@ -96,34 +114,18 @@ export default {
           })
         return false
       }
-      
-      const options = {
-        url: '/api/auth/register',
-        method: 'POST',
-        data: {
-          name: vm.user.name,
-          email: vm.user.email,
-          phone: vm.user.phone,
-          password: vm.user.password,
-          rpassword: vm.user.repeatPassword,
-        }
+  
+      if (this.user) {
+        this.$store.dispatch('auth/register', this.user).then(
+          () => {
+            console.log('Success')
+          },
+          error => {
+            console.log('error')
+          }
+        );
       }
-
-      let promise = this.$axios(options).then(function (result) {
-        if (result.data.emailExist) {
-          vm.errorMsg = vm.user.email + ' is already registered, try another.'
-          vm.$awn.alert(vm.errorMsg)
-        } else if(result.data.empty) {
-          vm.$awn.alert('The form cannot contain empty fields.')
-        } else if(result.data.diffPass) {
-          vm.$awn.alert('The passwords you entered do not match.')
-        } else if (result.data) {
-          vm.$awn.async(promise, vm.user.name + ' registered successfully.')
-        } else {
-          vm.$awn.alert('Oops, something went wrong, try again later.')
-        }
-      })
-    }
+    },
   }
 }
 </script>

@@ -60,7 +60,11 @@ export default {
             location.href = '/dashboard'
           },
           error => {
-            console.log('error')
+            this.$q.notify({
+            color: 'negative',
+            message: 'Wrong email or password, try again.'
+          })
+        return false
           }
         );
       }

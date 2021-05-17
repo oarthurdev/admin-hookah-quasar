@@ -93,6 +93,7 @@ export default {
         passwordRR: null,
         name_file: null
       },
+      updtImg: [],
       image: null
     }
   },
@@ -127,23 +128,39 @@ export default {
           ).then(function (result) {
             if (result.data) {
               vm.user.name_file = result.data.name_file
+              vm.updtImg.push({'nome': vm.user.name_file})
             }
           })
       let promise = this.$axios
         .post('/api/user/profile', {email: vm.user.email, password: vm.user.password, passwordR: vm.user.passwordR, passwordRR: vm.user.passwordRR, name_file: vm.user.name_file})
         .then(function (result) {
-          console.log(result)
+          vm.updtImg.forEach(element => {
+            vm.user.photo = element.nome
+            console.log(vm.user.photo)
+          })
           if (result.data.diffPass) {
-            vm.$awn.alert('Your current password is wrong.')
+            vm.$q.notify({
+              color: 'negative',
+              message: 'Your current password is wrong.'
+            })
           } else if (result.data.diffPass2) {
-            vm.$awn.alert('Passwords entered do not match')
+            vm.$q.notify({
+              color: 'negative',
+              message: 'Passwords entered do not match'
+            })
           } else if (result.data) {
-            vm.$awn.async(promise, 'Profile updated successfully.')
+            vm.$q.notify({
+              color: 'positive',
+              message: 'Profile updated successfully.'
+            })
             setTimeout(() => {
               location.reload()
             }, 5000)
           } else {
-            vm.$awn.alert('Oops, something went wrong, try again later.')
+            vm.$q.notify({
+              color: 'negative',
+              message: 'Oops, something went wrong, try again later.'
+            })
           }
         })
     },

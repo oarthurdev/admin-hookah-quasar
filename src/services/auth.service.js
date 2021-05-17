@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Notify } from 'quasar'
 
 const API_URL = 'http://localhost:8080/api/auth/';
 
@@ -11,6 +12,7 @@ class AuthService {
         password: user.password
       })
       .then(response => {
+        console.log(response)
         if (response.data.noExist) {
             self.$awn.alert('Email does not exist in our system.')
           } else if (response.data.isEmpty) {
@@ -33,31 +35,41 @@ class AuthService {
   }
 
   register(user) {
-    const options = {
-        url: 'register',
-        method: 'POST',
-        data: {
-            name: user.name,
-            email: user.email,
-            phone: user.phone,
-            password: user.password,
-            rpassword: user.repeatPassword
-        }
-    }
+    const self = this
+    return axios.post(API_URL + 'register', {
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        password: user.password,
+        rpassword: user.repeatPassword
+      }).then(response => {
+          if(response.data.emailExist) {
+            Notify.create({
+              color: 'negative',
+              message: '<b>' + user.email + '</b> has already registered.',
+              html: true
+            })
+            return false
+          } else if(response.data.diffPass) {
+            Notify.create({
+              color: 'negative',
+              message: 'Passwords entered does not match.'
+            })
+          }
+          else if(response.data.empty){
+            Notify.create({
+              color: 'negative',
+              message: 'The form cannot contain empty fields.'
+            })
+          } else {
+            Notify.create({
+              color: 'positive',
+              message: '<b>' + user.email + '</b> has registered successfully.',
+              html: true
+            })
+          }
 
-    return axios.post(API_URL + options).then(function (result) {
-        if (result.data.emailExist) {
-          vm.errorMsg = vm.user.email + ' is already registered, try another.'
-          vm.$awn.alert(vm.errorMsg)
-        } else if(result.data.empty) {
-          vm.$awn.alert('The form cannot contain empty fields.')
-        } else if(result.data.diffPass) {
-          vm.$awn.alert('The passwords you entered do not match.')
-        } else if (result.data) {
-          vm.$awn.async(promise, vm.user.name + ' registered successfully.')
-        } else {
-          vm.$awn.alert('Oops, something went wrong, try again later.')
-        }
+          return response.data
       })
   }
 }
