@@ -6,6 +6,7 @@
   "author": "Arthur Wagenknecht <oarthurdev@gmail.com>",
   "private": true,
   "scripts": {
+    "plop": "plop",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "dev": "quasar dev",
@@ -45,6 +46,7 @@
     "vue-picture-input": "^2.1.6",
     "vue-place-autocomplete": "^0.5.3",
     "vue-places": "^2.2.2",
+    "vue-recaptcha": "^1.3.0",
     "vue-search-select": "^2.9.3",
     "vue-tel-input": "^5.2.0",
     "vue2-google-maps": "^0.10.7"
@@ -61,6 +63,7 @@
     "electron-packager": "^14.2.1",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
+    "plop": "^2.7.4",
     "push-dir": "^0.4.1"
   },
   "browserslist": [

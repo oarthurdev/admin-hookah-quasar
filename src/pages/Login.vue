@@ -6,21 +6,28 @@
         <h3>Hookah Finder</h3>
       </div>
       <div class="form">
-        <md-field>
-          <label>Email</label>
-          <md-input v-model="user.email" autofocus></md-input>
-        </md-field>
-        <md-field md-has-password>
-          <label>Password</label>
-          <md-input v-model="user.password" type="password" @keydown.enter.prevent="submit"></md-input>
-        </md-field>
-      </div>
-      <div class="actions md-layout md-alignment-center-space-between">
-        <md-button class="md-raised md-primary" @click="logar">Log in</md-button>
-        <router-link to="/register">
-          <md-button class="md-raised md-secundary">Register</md-button>
-        </router-link>
-      </div>
+        <form @submit="submit" id="frm-submit">
+          <md-field>
+            <label>Email</label>
+            <md-input v-model="user.email" autofocus></md-input>
+          </md-field>
+          <md-field md-has-password>
+            <label>Password</label>
+            <md-input v-model="user.password" type="password"></md-input>
+          </md-field>
+          <md-field>
+            <div class="col-sm-10">
+              <g-recaptcha :sitekey="sitekey" :callback="callbackCaptcha"></g-recaptcha>
+            </div>
+          </md-field>
+        </form>
+        </div>
+        <div class="actions md-layout md-alignment-center-space-between">
+          <md-button class="md-raised md-primary" id="btn-logar" @click="logar">Log in</md-button>
+          <router-link to="/register">
+            <md-button class="md-raised md-secundary">Register</md-button>
+          </router-link>
+        </div>
     </md-content>
     <div class="background" />
   </div>
@@ -33,13 +40,18 @@ import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 require('vue-awesome-notifications/dist/styles/style.css')
+import gRecaptcha from 'src/components/recaptcha'
 
 Vue.use(VueMaterial)
 export default {
   data () {
     return {
       loading: false,
-      user: new User('', '')
+      user: new User('', ''),
+      sitekey: '6LfGP9saAAAAAEmBSD3LyxIJp0wMGU8bgChQgMy7',
+      disabled: true,
+      captcha: null,
+      callbackCaptcha: null
     }
   },
   created () {
@@ -54,17 +66,32 @@ export default {
   },
   methods: {
     async logar () {
+      const self = this
+
       if (this.user.email && this.user.password) {
         this.$store.dispatch('auth/login', this.user).then(
-          () => {
-            location.href = '/dashboard'
+          (response) => {
+            console.log(response)
+            if(response.success == false){
+              this.$q.notify({
+                color: 'negative',
+                message: 'Please select the captcha.'
+              })
+
+              return false
+            } else if(response.noExist || !response.auth) {
+              self.$q.notify({
+                color: 'negative',
+                message: 'Wrong email or password, try again.'
+              })
+            } else if(response.auth) {
+              localStorage.setItem('token', response.token)
+              localStorage.setItem('email', response.email)
+              location.href = '/dashboard'
+            } 
           },
           error => {
-            this.$q.notify({
-            color: 'negative',
-            message: 'Wrong email or password, try again.'
-          })
-        return false
+            console.log('error')
           }
         );
       }
@@ -75,6 +102,9 @@ export default {
     submit() {
       this.logar()
     }
+  },
+  components: {
+    'g-recaptcha': gRecaptcha
   }
 }
 </script>

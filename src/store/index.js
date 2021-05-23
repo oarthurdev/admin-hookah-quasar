@@ -2,9 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { auth } from './auth.module'
 // import example from './module-example'
-import VueAWN from "vue-awesome-notifications"
-let options = {}
-Vue.use(VueAWN, options)
 Vue.use(Vuex)
 /*
  * If not building with SSR mode, you can

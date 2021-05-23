@@ -9,22 +9,10 @@ class AuthService {
     return axios
       .post(API_URL + 'login', {
         email: user.email,
-        password: user.password
+        password: user.password,
+        captcha: document.querySelector('#g-recaptcha-response').value
       })
       .then(response => {
-        console.log(response)
-        if (response.data.noExist) {
-            self.$awn.alert('Email does not exist in our system.')
-          } else if (response.data.isEmpty) {
-            self.$awn.alert('User and password cannot be empty.')
-            return false
-          } else if (response.data.auth) {
-            localStorage.setItem('token', JSON.stringify(response.data.token));
-            localStorage.setItem('email', response.data.email)
-          } else {
-            self.$awn.alert('Wrong email or password, try again.')
-          }
-
         return response.data;
       });
   }

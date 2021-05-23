@@ -222,8 +222,11 @@ export default {
             .post('/api/lounge/delete', {store_id: store_id})
             .then(function (result) {
                 if (result.data) {
-                    const msg = "<font color='red'><b>" + result.data.name + '</b> has deleted successfully.</font>'
-                    vm.$awn.async(promise, msg)
+                    vm.$q.notify({
+                        color: 'negative',
+                        message: '<b>' + result.data.name + '</b> deleted successfully.',
+                        html: true
+                    })
                     vm.getAllStore()
                     vm.storeNameConfirm = null
                     vm.disabled = true
@@ -266,8 +269,11 @@ export default {
                                                             name_file: 'teste.jpg'})
                         .then(function (result) {
                             if (result.data) {
-                                const msg = "<b>" + self.store_name + "</b> has updated successfully."
-                                self.$awn.async(promise, msg)
+                                self.$q.notify({
+                                    color: 'positive',
+                                    message: '<b>' + self.store_name + '</b> updated successfully.',
+                                    html: true
+                                })
                                 self.dialog = false
                                 setTimeout(() => {
                                     location.reload()
