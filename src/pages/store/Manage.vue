@@ -10,19 +10,20 @@
                 </center>
             </q-card-section>
 
-            <q-separator dark inset />
+            <!-- <q-separator dark inset />
 
             <center>
                 <q-card-section>
-                {{stores.address}}
+                {{stores.street}} {{(stores.number) ? "nº " + stores.number :  null}} - {{stores.neighborhood}}<br />
+                {{stores.city}} / {{stores.state}} - {{stores.zipcode}}
                 </q-card-section>
-            </center>
+            </center> -->
 
             <q-separator dark inset />
 
             <center>
                 <q-card-section>
-                    <q-btn round color="red" icon="delete" @click="prompt = true; store_id = stores.store_id; store_name = stores.name" class="margin-right">
+                    <q-btn round color="red" icon="delete" @click="prompt = true; store_id = stores.store_id; store_update.name = stores.name" class="margin-right">
                         <q-tooltip
                         transition-show="rotate"
                         transition-hide="rotate">
@@ -35,7 +36,7 @@
                                 </q-card-section>
 
                                 <q-card-section class="q-pt-none">
-                                <q-input dense v-model="storeNameConfirm" autofocus @keyup="confirmDelete(storeNameConfirm, store_name)"/>
+                                <q-input dense v-model="storeNameConfirm" autofocus @keyup="confirmDelete(storeNameConfirm, store_update.name)"/>
                                 </q-card-section>
 
                                 <q-card-actions align="right" class="text-primary">
@@ -48,10 +49,16 @@
                     </q-btn>
                      <q-btn round color="secondary" @click="dialog = true; 
                                                             store_id = stores.store_id; 
-                                                            store_name = stores.name
-                                                            store_phone = stores.phone
-                                                            store_address = stores.address
-                                                            store_description = stores.description
+                                                            store_update.name = stores.name
+                                                            store_update.phone = stores.phone
+                                                            store_update.address.cep = stores.zipcode
+                                                            store_update.address.bairro = stores.neighborhood
+                                                            store_update.address.numero = stores.number
+                                                            store_update.address.street = stores.street
+                                                            store_update.address.complement = stores.complement
+                                                            store_update.address.cidade = stores.city
+                                                            store_update.address.estado = stores.state
+                                                            store_update.description = stores.description
                                                             store_items = stores.product" 
                                                             icon="edit" class="margin-right">
                         <q-tooltip
@@ -60,7 +67,7 @@
                         Edit
                         </q-tooltip>
                     </q-btn>
-                    <q-btn round color="primary" icon="power_settings_new" @click="confirm = true; store_id = stores.store_id; store_name = stores.name">
+                    <q-btn round color="primary" icon="power_settings_new" @click="confirm = true; store_id = stores.store_id; store_update.name = stores.name">
                         <q-tooltip
                         transition-show="rotate"
                         transition-hide="rotate">
@@ -106,28 +113,102 @@
                                     <q-input
                                         filled
                                         v-bind:placeholder="stores.name"
-                                        v-model="store_name"
+                                        v-model="store_update.name"
                                         label="Store name"
                                         class="margin-bottom"
                                         disable
                                     />
                                     <q-input
                                         filled
-                                        v-model="store_description"
+                                        v-model="store_update.description"
                                         label="Store description"
                                         class="margin-bottom"
                                     />
                                     
-                                    <q-input
-                                        filled
-                                        v-model="store_address"
-                                        label="Store address"
-                                        class="margin-bottom"
-                                    />
+                                    <div class="row">
+                                        <div class="col">
+                                            <q-input
+                                                ref="storea"
+                                                filled
+                                                v-bind:placeholder="stores.zipcode"
+                                                v-model="store_update.address.cep"
+                                                label="CEP"
+                                                for="cep"
+                                                mask="#####-###"
+                                                style="max-width: 250px; float: left; margin-bottom: 10px;"
+                                                @keydown.tab="getCepInfos(store_update.address.cep)"
+                                                v-on:blur="getCepInfos(store_update.address.cep)"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                        <div class="col">
+                                            <q-input
+                                            ref="storelog"
+                                             v-bind:placeholder="stores.street"
+                                            filled
+                                            v-model="store_update.address.street"
+                                            label="Logradouro"
+                                            style="margin-right: 10px; margin-bottom: 10px;"
+                                            />
+                                        </div>
+                                        <div class="col">
+                                            <q-input
+                                            ref="storenum"
+                                            filled
+                                            v-bind:placeholder="stores.number"
+                                            v-model="store_update.address.numero"
+                                            label="Numero"
+                                            style="margin-right: 10px; margin-bottom: 10px;"
+                                            />
+                                        </div>
+                                        <div class="col">
+                                            <q-input
+                                            ref="storecomp"
+                                            filled
+                                            v-bind:placeholder="stores.complement"
+                                            v-model="store_update.address.complement"
+                                            label="Complemento"
+                                            style="margin-bottom: 10px;"
+                                            />
+                                        </div>
+                                        </div>
+                                    <div class="row">
+                                        <div class="col">
+                                        <q-input
+                                            ref="storebair"
+                                            filled
+                                            v-bind:placeholder="stores.neighborhood"
+                                            v-model="store_update.address.bairro"
+                                            label="Bairro"
+                                            style="margin-right: 10px; margin-bottom: 10px;"
+                                            />
+                                        </div>
+                                        <div class="col">
+                                        <q-input
+                                            ref="storecid"
+                                            filled
+                                            v-bind:placeholder="stores.city"
+                                            v-model="store_update.address.cidade"
+                                            label="Cidade"
+                                            style="margin-right: 10px; margin-bottom: 10px;"
+                                            />
+                                        </div>
+                                        <div class="col">
+                                        <q-input
+                                            ref="storeest"
+                                            filled
+                                            v-bind:placeholder="stores.state"
+                                            v-model="store_update.address.estado"
+                                            label="Estado"
+                                            style="margin-bottom: 10px;"
+                                            />
+                                        </div>
+                                    </div>
 
                                     <q-input
                                         filled
-                                        v-model="store_phone"
+                                        v-model="store_update.phone"
                                         label="Store Phone"
                                         mask="(##) ##### - ####"
                                         class="margin-bottom"
@@ -163,7 +244,7 @@
             <q-card>
                 <q-card-section class="row items-center">
                 <q-avatar icon="power_settings_new" color="primary" text-color="white" />
-                <span class="q-ml-sm">You want to connect to <b>{{store_name}}?</b></span>
+                <span class="q-ml-sm">You want to connect to <b>{{store_update.name}}?</b></span>
                 </q-card-section>
 
                 <q-card-actions align="right">
@@ -177,6 +258,7 @@
 </template>
 <script>
 import PictureInput from 'vue-picture-input'
+import cep from 'cep-promise'
 require('src/functions/string-prototypes')
 
 export default {
@@ -190,10 +272,6 @@ export default {
         prompt: false,
         store_id: null,
         storeNameConfirm: null,
-        store_name: null,
-        store_description: null,
-        store_phone: null,
-        store_address: null,
         disabled: true,
         dialog: false,
         maximizedToggle: true,
@@ -201,7 +279,15 @@ export default {
             name: null,
             description: null,
             phone: null,
-            address: null,
+            address: {
+                cep: null,
+                numero: null,
+                cidade: null,
+                estado: null,
+                complement: null,
+                street: null,
+                bairro: null,
+            },
             image: null
         },
         store_products: [],
@@ -243,6 +329,19 @@ export default {
               this.disabled = true
           }
       },
+      getCepInfos (cepP) {
+        let self = this
+        cepP = cepP.replace(/[^a-zA-Z0-9]/g, '');
+        cep(cepP)
+            .then(function (result) {
+                self.store_update.address.street     = result.street
+                self.store_update.address.bairro     = result.neighborhood
+                self.store_update.address.cidade     = result.city
+                self.store_update.address.estado     = result.state
+                self.store_update.address.numero     = null
+                self.store_update.address.complement = null
+            })
+        },
       getAllStore () {
         const self = this
         self.user.email = localStorage.getItem('email')
@@ -262,18 +361,12 @@ export default {
           e.preventDefault()
           const self = this
           let promise = this.$axios.post('/api/lounge/update', {store_id: self.store_id,
-                                                            description_store: self.store_description, 
-                                                            address_store: self.store_address, 
-                                                            phone_store: self.store_phone, 
-                                                            token: self.user.token, 
+                                                            store_update: self.store_update,
                                                             name_file: 'teste.jpg'})
                         .then(function (result) {
                             if (result.data) {
-                                self.$q.notify({
-                                    color: 'positive',
-                                    message: '<b>' + self.store_name + '</b> updated successfully.',
-                                    html: true
-                                })
+                                const msg = "Store updated successfully."
+                                self.$store.dispatch('success', {position: 'bottom-right', message: msg})
                                 self.dialog = false
                                 setTimeout(() => {
                                     location.reload()

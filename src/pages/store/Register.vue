@@ -277,7 +277,7 @@ export default {
             }
           })
       let promise = this.$axios
-        .post('/api/lounge/register', {name: vm.store.name, description: vm.store.description, phone: vm.store.phone, name_file: vm.store.name_file, products: vm.store.items})
+        .post('/api/lounge/register', {name: vm.store.name, description: vm.store.description, phone: vm.store.phone, cep: vm.store.cep, logradouro: vm.store.logradouro, bairro: vm.store.bairro, cidade: vm.store.cidade, estado: vm.store.estado, numero: vm.store.numero, complemento: vm.store.complemento, name_file: vm.store.name_file, products: vm.store.items})
         .then(function (result) {
           if (result.data) {
             vm.$q.notify({
