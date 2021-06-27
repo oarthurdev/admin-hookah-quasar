@@ -8,78 +8,152 @@
       @submit="submit"
       class="q-gutter-md"
     >
-      <q-input
-        ref="storeN"
-        filled
-        v-model="store.name"
-        label="Store name"
-        :rules="[
-          val => !!val || '* Field Required'
-        ]"
-        lazy-rules
-      />
-
-      <q-input
-      ref="storeD"
-      v-model="store.description"
-      filled
-      type="textarea"
-      label="Store Description"
-      :rules="[
-          val => !!val || '* Field Required'
-        ]"
-      lazy-rules
-      />
-
-      <q-input
-        ref="storeP"
-        filled
-        v-model="store.phone"
-        label="Store Phone"
-        mask="(##) ##### - ####"
-        :rules="[
-          val => !!val || '* Field Required'
-        ]"
-      lazy-rules
-      />
-
-      <q-input
-        ref="storea"
-        filled
-        v-model="store.address"
-        label="Store Address"
-        for="address"
-        />
-
-      <q-select
+    <div class="row">
+      <div class="col">
+        <q-input
+          ref="storeN"
           filled
-          v-model="store.items"
-          multiple
-          :options="options"
-          use-chips
-          stack-label
-          label="Store products"
-          style="margin-bottom: 30px;"
+          v-model="store.name"
+          label="Store name"
+          :rules="[
+            val => !!val || '* Field Required'
+          ]"
+          lazy-rules
         />
-      <picture-input
-        ref="pictureInput"
-        width="200" 
-        height="200" 
-        margin="16" 
-        accept="image/jpeg,image/png" 
-        size="10" 
-        button-class="btn"
-        :custom-strings="{
-            upload: '<h1>Bummer!</h1>',
-            drag: 'Upload a Store image. '
-        }"
-        @change="onChange">
-        </picture-input>
-      <div>
-        <q-btn class="float-right" style="margin-bottom: 10px;" v-on:click="submit" label="Submit" type="submit" color="primary"/>
       </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <q-input
+        ref="storeD"
+        v-model="store.description"
+        filled
+        type="textarea"
+        label="Store Description"
+        :rules="[
+            val => !!val || '* Field Required'
+          ]"
+        lazy-rules
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <q-input
+          ref="storeP"
+          filled
+          v-model="store.phone"
+          label="Store Phone"
+          mask="(##) ##### - ####"
+          :rules="[
+            val => !!val || '* Field Required'
+          ]"
+        lazy-rules
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <q-input
+            ref="storea"
+            filled
+            v-model="store.cep"
+            label="CEP"
+            for="cep"
+            mask="#####-###"
+            style="max-width: 250px; float: left;"
+            @keydown.tab="getCepInfos(store.cep)"
+            v-on:blur="getCepInfos(store.cep)"
+            />
+        </div>
+      </div>
+    <div class="row">
+      <div class="col">
+        <q-input
+          ref="storelog"
+          filled
+          v-model="store.logradouro"
+          label="Logradouro"
+          style="margin-right: 10px;"
+          />
+      </div>
+      <div class="col">
+        <q-input
+          ref="storenum"
+          filled
+          v-model="store.numero"
+          label="Numero"
+          style="margin-right: 10px;"
+          />
+      </div>
+      <div class="col">
+        <q-input
+          ref="storecomp"
+          filled
+          v-model="store.complemento"
+          label="Complemento"
+          />
+      </div>
+    </div>
+  <div class="row">
+    <div class="col">
+      <q-input
+        ref="storebair"
+        filled
+        v-model="store.bairro"
+        label="Bairro"
+        style="margin-right: 10px;"
+        />
+      </div>
+    <div class="col">
+      <q-input
+        ref="storecid"
+        filled
+        v-model="store.cidade"
+        label="Cidade"
+        style="margin-right: 10px;"
+        />
+    </div>
+    <div class="col">
+      <q-input
+        ref="storeest"
+        filled
+        v-model="store.estado"
+        label="Estado"
+        />
+    </div>
+  </div>
+   <q-select
+      filled
+      v-model="store.items"
+      multiple
+      :options="options"
+      use-chips
+      stack-label
+      label="Store products"
+      style="margin-bottom: 30px;"
+    />
+    <picture-input
+      ref="pictureInput"
+      width="200" 
+      height="200" 
+      margin="16" 
+      accept="image/jpeg,image/png" 
+      size="10" 
+      button-class="btn"
+      :custom-strings="{
+          upload: '<h1>Bummer!</h1>',
+          drag: 'Upload a Store image. '
+      }"
+      @change="onChange">
+      </picture-input>
+    <div>
+      <q-btn class="float-right" style="margin-bottom: 10px;" v-on:click="submit" label="Submit" type="submit" color="primary"/>
+    </div>
     </q-form>
-      </q-card-section>
+  </q-card-section>
     </center>
   </q-card> 
 </div>
@@ -92,6 +166,7 @@ import _ from 'lodash'
 import VuePlaceAutocomplete from 'vue-place-autocomplete';
 import VueTelInput from 'vue-tel-input'
 import 'vue-tel-input/dist/vue-tel-input.css'
+import cep from 'cep-promise'
 
 Vue.use(VueTelInput)
 Vue.use(VuePlaceAutocomplete);
@@ -106,7 +181,13 @@ export default {
       store: {
         name: null,
         description: null,
-        address: null,
+        cep: null,
+        numero: null,
+        complemento: null,
+        bairro: null,
+        estado: null,
+        cidade: null,
+        logradouro: null,
         phone: null,
         name_file: null,
         items: []
@@ -170,6 +251,17 @@ export default {
         })
   },
   methods: {
+    getCepInfos (cepP) {
+      let self = this
+      cepP = cepP.replace(/[^a-zA-Z0-9]/g, '');
+      cep(cepP)
+        .then(function (result) {
+          self.store.logradouro = result.street
+          self.store.bairro = result.neighborhood
+          self.store.cidade = result.city
+          self.store.estado = result.state
+        })
+    },
     submit (e) {
       let vm = this
       e.preventDefault()

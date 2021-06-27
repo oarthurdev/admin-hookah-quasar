@@ -139,28 +139,17 @@ export default {
             console.log(vm.user.photo)
           })
           if (result.data.diffPass) {
-            vm.$q.notify({
-              color: 'negative',
-              message: 'Your current password is wrong.'
-            })
+            vm.$store.dispatch('error', {position: 'bottom-right', message: 'Your current password is wrong.'})
           } else if (result.data.diffPass2) {
-            vm.$q.notify({
-              color: 'negative',
-              message: 'Passwords entered do not match'
-            })
+            vm.$store.dispatch('error', {position: 'bottom-right', message: 'Passwords entered do not match'})
+            return false
           } else if (result.data) {
-            vm.$q.notify({
-              color: 'positive',
-              message: 'Profile updated successfully.'
-            })
+            vm.$store.dispatch('success', {position: 'bottom-right', message: 'Profile updated successfully.'})
             setTimeout(() => {
               location.reload()
             }, 5000)
           } else {
-            vm.$q.notify({
-              color: 'negative',
-              message: 'Oops, something went wrong, try again later.'
-            })
+            vm.$store.dispatch('error', {position: 'bottom-right', message: 'Oops, something went wrong, try again later.'})
           }
         })
     },
