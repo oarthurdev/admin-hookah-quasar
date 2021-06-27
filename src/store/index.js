@@ -1,6 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { auth } from './auth.module'
+
+import Toast from "vue-toastification";
+// Import the CSS or use your own!
+import "vue-toastification/dist/index.css";
+
+const options = {
+    // You can set your default options here
+};
+
+
+Vue.use(Toast, options);
 // import example from './module-example'
 Vue.use(Vuex)
 /*
@@ -12,7 +23,7 @@ Vue.use(Vuex)
  * with the Store instance.
  */
 
-export default function (/* { ssrContext } */) {
+export default function (opts) {
   const Store = new Vuex.Store({
     state: {
       darkMode: false
@@ -26,8 +37,42 @@ export default function (/* { ssrContext } */) {
       dark: state => state.darkMode
     },
     modules: {
-      auth
+      auth,      
       // example
+    },
+    actions: {
+       error (context, payload) {        
+         opts.Vue.$toast.error(payload.message, {
+          position: payload.position,
+          timeout: payload.timeout,
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          draggable: true,
+          draggablePercent: 0.6,
+          showCloseButtonOnHover: false,
+          hideProgressBar: true,
+          closeButton: 'button',
+          icon: true,
+          rtl: false
+        })
+      },
+      success (context, payload) {        
+        opts.Vue.$toast.success(payload.message, {
+         position: payload.position,
+         timeout: payload.timeout,
+         closeOnClick: true,
+         pauseOnFocusLoss: true,
+         pauseOnHover: true,
+         draggable: true,
+         draggablePercent: 0.6,
+         showCloseButtonOnHover: false,
+         hideProgressBar: true,
+         closeButton: 'button',
+         icon: true,
+         rtl: false
+       })
+     },
     },
 
     // enable strict mode (adds overhead!)

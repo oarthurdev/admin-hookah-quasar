@@ -13,11 +13,11 @@
           </md-field>
           <md-field md-has-password>
             <label>Password</label>
-            <md-input v-model="user.password" type="password"></md-input>
+            <md-input v-model="user.password" type="password" v-on:keyup.enter="logar"></md-input>
           </md-field>
-          <md-field>
+          <md-field v-if="invalidPass == true">
             <div class="col-sm-10">
-              <g-recaptcha :sitekey="sitekey" :callback="callbackCaptcha"></g-recaptcha>
+              <g-recaptcha v-if="invalidPass == true" :sitekey="sitekey" :callback="callbackCaptcha"></g-recaptcha>
             </div>
           </md-field>
         </form>
@@ -43,6 +43,7 @@ require('vue-awesome-notifications/dist/styles/style.css')
 import gRecaptcha from 'src/components/recaptcha'
 
 Vue.use(VueMaterial)
+
 export default {
   data () {
     return {
@@ -51,7 +52,8 @@ export default {
       sitekey: '6LfGP9saAAAAAEmBSD3LyxIJp0wMGU8bgChQgMy7',
       disabled: true,
       captcha: null,
-      callbackCaptcha: null
+      callbackCaptcha: null,
+      invalidPass: false
     }
   },
   created () {
@@ -71,20 +73,18 @@ export default {
       if (this.user.email && this.user.password) {
         this.$store.dispatch('auth/login', this.user).then(
           (response) => {
-            console.log(response)
-            if(response.success == false){
-              this.$q.notify({
-                color: 'negative',
-                message: 'Please select the captcha.'
-              })
-
+            if (response.invalidPass) {
+              self.invalidPass = true
+              this.$store.dispatch('error', {position: 'bottom-right', message: 'Invalid password, try again.'})
+            }
+            else if (response.success == false) {
+              this.$store.dispatch('error', {position: 'bottom-right', message: 'Please select the captcha.'})
               return false
-            } else if(response.noExist || !response.auth) {
-              self.$q.notify({
-                color: 'negative',
-                message: 'Wrong email or password, try again.'
-              })
+            } else if (response.noExist || !response.auth) {
+              this.$store.dispatch('error', {position:'bottom-right', message: 'Wrong email, try again.'})
+              return false
             } else if(response.auth) {
+              self.invalidPass = false
               localStorage.setItem('token', response.token)
               localStorage.setItem('email', response.email)
               location.href = '/dashboard'
