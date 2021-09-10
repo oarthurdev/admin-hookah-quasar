@@ -1,6 +1,6 @@
 <template>
 <div class="q-pa-md row items-start q-gutter-md">
- <q-card flat bordered class="card-update-profile" style="margin-left: 50px;">
+ <q-card flat bordered class="card-update-profile">
     <center>
       <q-card-section>
         <div class="text-h6" style="margin-bottom: 20px;">Register your store</div>
@@ -64,8 +64,11 @@
             for="cep"
             mask="#####-###"
             style="max-width: 250px; float: left;"
-            @keydown.tab="getCepInfos(store.cep)"
             v-on:blur="getCepInfos(store.cep)"
+            :rules="[
+            val => !!val || '* Field Required'
+          ]"
+            lazy-rules
             />
         </div>
       </div>
@@ -77,6 +80,10 @@
           v-model="store.logradouro"
           label="Logradouro"
           style="margin-right: 10px;"
+          :rules="[
+            val => !!val || '* Field Required'
+          ]"
+          lazy-rules
           />
       </div>
       <div class="col">
@@ -105,6 +112,10 @@
         v-model="store.bairro"
         label="Bairro"
         style="margin-right: 10px;"
+        :rules="[
+            val => !!val || '* Field Required'
+          ]"
+          lazy-rules
         />
       </div>
     <div class="col">
@@ -114,6 +125,10 @@
         v-model="store.cidade"
         label="Cidade"
         style="margin-right: 10px;"
+        :rules="[
+            val => !!val || '* Field Required'
+          ]"
+          lazy-rules
         />
     </div>
     <div class="col">
@@ -121,6 +136,10 @@
         ref="storeest"
         filled
         v-model="store.estado"
+        :rules="[
+            val => !!val || '* Field Required'
+          ]"
+          lazy-rules
         label="Estado"
         />
     </div>
@@ -229,7 +248,7 @@ export default {
   },
   created () {
     let vm = this
-    vm.user.email = localStorage.getItem('email')
+    vm.user.email = localStorage.getItem('name')
 
     vm.$axios
         .get('/api/user/get-photo')
@@ -260,6 +279,12 @@ export default {
           self.store.bairro = result.neighborhood
           self.store.cidade = result.city
           self.store.estado = result.state
+        })
+        .catch(function (res) {
+            if(res) {
+              self.$store.dispatch('error', {position: 'bottom-right', message: 'CEP não encontrado.'})
+            }
+            return false
         })
     },
     submit (e) {
@@ -323,6 +348,6 @@ export default {
 }
 
 .card-update-profile {
-  min-width: 900px;
+  min-width: 1100px;
 }
 </style>

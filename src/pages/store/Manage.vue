@@ -103,13 +103,13 @@
 
                             <q-card-section class="q-pt-none">
                                 <q-form>
-                                    <q-input
+                                    <!-- <q-input
                                         filled
                                         v-model="store_id"
                                         label="Store id"
                                         disable
                                         class="margin-bottom"
-                                    />
+                                    /> -->
                                     <q-input
                                         filled
                                         v-bind:placeholder="stores.name"
@@ -130,13 +130,11 @@
                                             <q-input
                                                 ref="storea"
                                                 filled
-                                                v-bind:placeholder="stores.zipcode"
                                                 v-model="store_update.address.cep"
                                                 label="CEP"
                                                 for="cep"
                                                 mask="#####-###"
                                                 style="max-width: 250px; float: left; margin-bottom: 10px;"
-                                                @keydown.tab="getCepInfos(store_update.address.cep)"
                                                 v-on:blur="getCepInfos(store_update.address.cep)"
                                                 />
                                             </div>
@@ -145,7 +143,6 @@
                                         <div class="col">
                                             <q-input
                                             ref="storelog"
-                                             v-bind:placeholder="stores.street"
                                             filled
                                             v-model="store_update.address.street"
                                             label="Logradouro"
@@ -156,7 +153,6 @@
                                             <q-input
                                             ref="storenum"
                                             filled
-                                            v-bind:placeholder="stores.number"
                                             v-model="store_update.address.numero"
                                             label="Numero"
                                             style="margin-right: 10px; margin-bottom: 10px;"
@@ -166,7 +162,6 @@
                                             <q-input
                                             ref="storecomp"
                                             filled
-                                            v-bind:placeholder="stores.complement"
                                             v-model="store_update.address.complement"
                                             label="Complemento"
                                             style="margin-bottom: 10px;"
@@ -178,7 +173,6 @@
                                         <q-input
                                             ref="storebair"
                                             filled
-                                            v-bind:placeholder="stores.neighborhood"
                                             v-model="store_update.address.bairro"
                                             label="Bairro"
                                             style="margin-right: 10px; margin-bottom: 10px;"
@@ -188,7 +182,6 @@
                                         <q-input
                                             ref="storecid"
                                             filled
-                                            v-bind:placeholder="stores.city"
                                             v-model="store_update.address.cidade"
                                             label="Cidade"
                                             style="margin-right: 10px; margin-bottom: 10px;"
@@ -198,7 +191,6 @@
                                         <q-input
                                             ref="storeest"
                                             filled
-                                            v-bind:placeholder="stores.state"
                                             v-model="store_update.address.estado"
                                             label="Estado"
                                             style="margin-bottom: 10px;"
@@ -249,7 +241,7 @@
 
                 <q-card-actions align="right">
                 <q-btn flat label="Cancel" color="red" v-close-popup />
-                <q-btn flat label="Yes" color="primary" @click="connect" v-close-popup />
+                <q-btn flat label="Yes" color="primary" @click="connect(store_id)" v-close-popup />
                 </q-card-actions>
             </q-card>
         </q-dialog>
@@ -299,8 +291,18 @@ export default {
       this.getAllStore()
   },
   methods: {
-      connect () {
-          console.log('connect')
+      connect (s_id) {
+          const self = this
+          self.store.forEach(element => {
+              if(s_id == element.store_id) {
+                localStorage.removeItem('name')
+                localStorage.setItem('name', element.name)
+                localStorage.setItem('store_id', element.store_id)
+                window.location.href = '/store/dashboard'
+                const msg = "Conectado em " + element.name
+                self.$store.dispatch('success', {position: 'bottom-right', message: msg})
+             }
+          })
       },
       deleteStore (store_id) {
           const vm = this
@@ -334,6 +336,7 @@ export default {
         cepP = cepP.replace(/[^a-zA-Z0-9]/g, '');
         cep(cepP)
             .then(function (result) {
+                console.log(result.status)
                 self.store_update.address.street     = result.street
                 self.store_update.address.bairro     = result.neighborhood
                 self.store_update.address.cidade     = result.city
@@ -341,10 +344,16 @@ export default {
                 self.store_update.address.numero     = null
                 self.store_update.address.complement = null
             })
+            .catch(function (res) {
+                if(res) {
+                    self.$store.dispatch('error', {position: 'top-left', message: 'CEP não encontrado.'})
+                }
+                return false
+            })
         },
       getAllStore () {
         const self = this
-        self.user.email = localStorage.getItem('email')
+        self.user.email = localStorage.getItem('name')
 
         this.$axios
         .get('/api/lounge/get-all')

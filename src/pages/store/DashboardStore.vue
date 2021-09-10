@@ -1,16 +1,21 @@
 <template>
     <center>
-        <h5>Dashboard</h5>
+        <h5>Dashboard Store</h5>
     </center>
 </template>
 <script>
 export default {
-  name: 'Dashboard',
+  name: 'DashboardStore',
   data () {
     return {
       user: {
         email: null,
-        token: null
+        token: null,
+        photo: null
+      },
+      store: {
+        id: null,
+        image: null
       }
     }
   },
@@ -18,21 +23,14 @@ export default {
     let vm = this
     vm.user.email = localStorage.getItem('name')
     vm.user.token = localStorage.getItem('token')
+    vm.store.id = localStorage.getItem('store_id')
+
+console.log(vm.store.id)
     vm.$axios
-        .get('/api/user/get-photo')
+        .post('/api/lounge/get-image', {store_id: vm.store.id})
         .then(function (result) {
           if (result.data) {
-            vm.user.photo = result.data.profile_picture
-            console.log(vm.fullPath)
-          } else {
-            console.log('Error')
-          }
-        })
-    vm.$axios
-        .get('/api/user/get-role')
-        .then(function (result) {
-          if (result.data) {
-            vm.user.role = result.data.role_name
+            vm.store.image = result.data.lounge[0].image
           } else {
             console.log('Error')
           }

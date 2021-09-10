@@ -70,7 +70,8 @@ export default function (opts) {
          hideProgressBar: true,
          closeButton: 'button',
          icon: true,
-         rtl: false
+         rtl: false,
+         html: true
        })
      },
     },

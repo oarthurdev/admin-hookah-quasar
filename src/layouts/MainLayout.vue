@@ -41,6 +41,13 @@
             </q-item>
             <div style="margin-top: 8px;" class="text-center">{{user.email}}</div>
             <div style="margin-top: 8px;" class="text-center">{{user.role}}</div>
+
+            <!-- <q-separator inset />
+
+            <div v-for="stores in store" v-bind:key="stores.store_id">
+              <img v-bind:src="'http://localhost:8080/' + criarNome(stores.name) + '/' + stores.image" width="65px" height="65px" class="store-image" />
+              <div class="text-h6">{{stores.name}}</div>
+            </div> -->
             <q-item clickable @click="logout">
               <q-item-section>
                 <q-btn :icon="'logout'">
@@ -131,6 +138,7 @@ import menu from 'src/components/menu/js/menu.js'
 import Vue from 'vue'
 import VuePageTransition from 'vue-page-transition'
 import Breadcrumbs from 'components/Breadcrumbs'
+require('src/functions/string-prototypes')
 
 Vue.use(VuePageTransition)
 
@@ -154,12 +162,14 @@ export default {
         role: ''
       },
       token: null,
-      menuGeral: menu
+      menuGeral: menu,
+      store: {}
     }
   },
   created () {
     let vm = this
-    vm.user.email = localStorage.getItem('email')
+    vm.getAllStore()
+    vm.user.email = localStorage.getItem('name')
     vm.token = localStorage.getItem('token')
 
     console.log(vm.token)
@@ -184,6 +194,21 @@ export default {
         })
   },
   methods: {
+    criarNome (str) {
+          return createSlug(str)
+      },
+    getAllStore () {
+        const self = this
+        self.user.email = localStorage.getItem('name')
+
+        this.$axios
+        .get('/api/lounge/get-all')
+        .then(function (result) {
+            if (result.data) {
+                self.store = result.data.lounge
+            }
+        })
+      },
     setDarkMode () {
       if(this.darkMode) {
         this.$q.dark.set(true)

@@ -99,7 +99,7 @@ export default {
   },
   created () {
     let vm = this
-    vm.user.email = localStorage.getItem('email')
+    vm.user.email = localStorage.getItem('name')
     vm.token = localStorage.getItem('token')
     vm.$axios
         .get('/api/user/get-photo')

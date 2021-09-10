@@ -86,7 +86,7 @@ export default {
             } else if(response.auth) {
               self.invalidPass = false
               localStorage.setItem('token', response.token)
-              localStorage.setItem('email', response.email)
+              localStorage.setItem('name', response.email)
               location.href = '/dashboard'
             } 
           },
